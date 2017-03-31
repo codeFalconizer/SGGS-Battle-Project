@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="splash_text_app_name">40sp</dimen>
+    <dimen name="edittext_drawable_padding">10dp</dimen>
+    <dimen name="radio_padding">10dp</dimen>
+    <dimen name="datepicker_padding">20dp</dimen>
+
+    <dimen name="info_label_height">110dp</dimen>
+    <dimen name="info_label_size">40sp</dimen>
+    <dimen name="info_text_input_padding">5dp</dimen>
+    <dimen name="info_text_edit_padding">10dp</dimen>
+    <dimen name="info_text_padding">10dp</dimen>
+    <dimen name="info_circleimage_size">100dp</dimen>
+    <dimen name="info_circleimage_border_width">2dp</dimen>
+    <dimen name="info_radio_label_size">20sp</dimen>
+    <dimen name="info_radio_item_size">18sp</dimen>
+    <dimen name="info_radio_item_rightPadding">50dp</dimen>
+    <dimen name="info_radio_item_leftPadding">5dp</dimen>
+
+    <dimen name="text_submit_size">15sp</dimen>
+
+    <dimen name="setting_text_margin_left">20dp</dimen>
+    <dimen name="setting_text_size_title">15sp</dimen>
+    <dimen name="setting_sub_text_size_title">10sp</dimen>
+    <dimen name="setting_switch_margin_right">10dp</dimen>
+    
+    <dimen name="main_text_size_sos">30sp</dimen>
+    <dimen name="main_text_size">20sp</dimen>
+    <dimen name="main_sub_text_size">15sp</dimen>
+</resources>

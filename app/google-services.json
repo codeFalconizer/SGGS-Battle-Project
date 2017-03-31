@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "711582913808",
+    "project_id": "sos-app-5b2df"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:711582913808:android:e36512dc838a8144",
+        "android_client_info": {
+          "package_name": "com.trio.sos"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "711582913808-gq1qjf4953dt08s71srjnvpsc1vh4j0h.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.trio.sos",
+            "certificate_hash": "546f62af34385e0dbb2dc838c870621c9522d6ce"
+          }
+        },
+        {
+          "client_id": "711582913808-abs4orv8pp5dg2ejh3jduilpmee71el9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCLBLKtom7z4C_nTiqBovOr-Z20rTjNGJ8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

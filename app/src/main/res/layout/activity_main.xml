@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp">
+
+        <ImageView
+            android:id="@+id/main_image_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/main_location" />
+        <TextView
+            android:id="@+id/main_text_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/main_image_location"
+            android:text="@string/main_text_location"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/main_text_size" />
+        <TextView
+            android:layout_marginTop="5dp"
+            android:id="@+id/main_text_latitude"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/main_text_location"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/main_sub_text_size"
+            android:text="Latitude:19.201215"/>
+        <TextView
+            android:layout_marginTop="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/main_text_latitude"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/main_sub_text_size"
+            android:text="Longitude:19.201215"/>
+    </RelativeLayout>
+
+    <com.skyfishjy.library.RippleBackground
+        android:id="@+id/main_ripple_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:rb_color="@color/colorAccent"
+        app:rb_duration="3500"
+        app:rb_radius="90dp"
+        app:rb_rippleAmount="2"
+        app:rb_scale="3">
+
+        <Button
+            android:id="@+id/main_sos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@drawable/round_button"
+            android:text="@string/main_sos"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/main_text_size_sos"
+            android:textStyle="bold" />
+
+    </com.skyfishjy.library.RippleBackground>
+
+    <com.getbase.floatingactionbutton.FloatingActionsMenu
+        android:id="@+id/main_fab_menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        app:fab_addButtonColorNormal="@color/colorAccent"
+        app:fab_addButtonColorPressed="@color/colorAccent"
+        app:fab_addButtonPlusIconColor="@android:color/white"
+        app:fab_addButtonSize="normal"
+        app:fab_addButtonStrokeVisible="true"
+        app:fab_labelStyle="@style/main_fab_menu_label_style">
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/main_fab_profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorNormal="@color/colorAccent"
+            app:fab_colorPressed="@android:color/transparent"
+            app:fab_icon="@drawable/main_fab_profile"
+            app:fab_size="mini"
+            app:fab_title="My Profile" />
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/main_fab_contacts"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorNormal="@color/colorAccent"
+            app:fab_colorPressed="@android:color/transparent"
+            app:fab_icon="@drawable/main_fab_contacts"
+            app:fab_size="mini"
+            app:fab_title="Emergency Contacts" />
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/main_fab_setting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorNormal="@color/colorAccent"
+            app:fab_colorPressed="@android:color/transparent"
+            app:fab_icon="@drawable/main_fab_setting"
+            app:fab_size="mini"
+            app:fab_title="Settings" />
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/main_fab_signout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorNormal="@color/colorAccent"
+            app:fab_colorPressed="@android:color/transparent"
+            app:fab_icon="@drawable/main_fab_signout"
+            app:fab_size="mini"
+            app:fab_title="Sign Out" />
+    </com.getbase.floatingactionbutton.FloatingActionsMenu>
+</RelativeLayout>

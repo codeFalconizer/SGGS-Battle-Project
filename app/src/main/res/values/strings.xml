@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">Save Me</string>
+    <string name="action_setting">Settings</string>
+
+    <string name="label">Personal Details</string>
+    <string name="submit">Submit</string>
+
+    <string name="radio_label">Gender :</string>
+    <string name="radio_male">Male</string>
+    <string name="radio_female">Female</string>
+
+    <string name="edit_hint_dob">DOB (dd/mm/yyyy)</string>
+    <string name="edit_hint_name">Name</string>
+    <string name="edit_hint_contact">Contact No.</string>
+    <string name="edit_hint_email">Email</string>
+
+    <string name="info_circle_desc">User Profile Image</string>
+
+    <string name="setting_title_sms">Send SMS</string>
+    <string name="setting_title_email">Send Email</string>
+    <string name="setting_title_video">Send Video</string>
+    <string name="setting_title_video_duration">Max. Video Length (secs)</string>
+
+    <string name="main_sos">SOS</string>
+    <string name="main_text_location">Your Location</string>
+</resources>
