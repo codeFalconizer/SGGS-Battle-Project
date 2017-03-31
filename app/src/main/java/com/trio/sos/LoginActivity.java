@@ -1,14 +1,13 @@
 package com.trio.sos;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
-
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -23,16 +22,27 @@ import com.trio.sos.repo.EmergencyContacts;
 import com.trio.sos.repo.LoggedUser;
 import com.trio.sos.repo.Settings;
 
-public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
+import java.util.List;
 
+import pub.devrel.easypermissions.EasyPermissions;
+
+public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, EasyPermissions.PermissionCallbacks {
+
+    public static final String TAG = LoginActivity.class.getName();
 
     GoogleApiClient mGoogleApiClient;
-    public static final String TAG = LoginActivity.class.getName();
+
+    //Permission Deny Flags
+    boolean mSmsDenyFlag = false;
+    Settings mSettings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        mSettings = new Settings(this);
+
+        //Creating objects for Google Sign-in
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .requestProfile()
@@ -46,26 +56,80 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         signInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                requestPermissions();
                 signOut();
                 signIn();
             }
         });
+
         checkForSignOutRequest();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //Checking for Permissions and requesting if not present
+        requestPermissions();
+        //Connecting API Client
+        mGoogleApiClient.connect();
+    }
+
+    private void requestPermissions() {
+        if (!mSmsDenyFlag && !EasyPermissions.hasPermissions(this, Manifest.permission.SEND_SMS)) {
+            EasyPermissions.requestPermissions(this
+                    , "Application needs SMS permission to send SMS to emergency contacts"
+                    , Constants.REQUEST_PERMISSION_SEND_SMS
+                    , Manifest.permission.SEND_SMS);
+        } else if (!EasyPermissions.hasPermissions(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            EasyPermissions.requestPermissions(this
+                    , "Application needs Storage permission to read credentials from storage"
+                    , Constants.REQUEST_PERMISSION_WRITE_STORAGE
+                    , Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        } else if (!EasyPermissions.hasPermissions(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
+            EasyPermissions.requestPermissions(this
+                    , "Application needs Location access to report location to Emergency Contacts"
+                    , Constants.REQUEST_PERMISSION_LOCATION
+                    , Manifest.permission.ACCESS_FINE_LOCATION);
+        }
+    }
+
+    @Override
+    public void onPermissionsGranted(int requestCode, List<String> perms) {
+        requestPermissions();
+    }
+
+    @Override
+    public void onPermissionsDenied(int requestCode, List<String> perms) {
+        if (requestCode == Constants.REQUEST_PERMISSION_SEND_SMS) {
+            mSmsDenyFlag = true;
+            mSettings.setSmsAlertEnabled(false);
+        }
+        mSettings.save();
+        requestPermissions();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        EasyPermissions.onRequestPermissionsResult(
+                requestCode, permissions, grantResults, this);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        mGoogleApiClient.connect();
+
     }
 
     private void checkForSignOutRequest() {
         Intent intent = getIntent();
-        if (intent.getStringExtra(Constants.KEY_INTENT_FROM).equals(MainActivity.TAG)){
+        if (intent.getStringExtra(Constants.KEY_INTENT_FROM).equals(MainActivity.TAG)) {
             SharedPreferences route = getSharedPreferences(
                     Constants.SHARED_PREFERENCE_ROUTE
-                    ,MODE_PRIVATE);
-            route.edit().clear().commit();
+                    , MODE_PRIVATE);
+            route.edit().clear().apply();
             Settings settings = new Settings(this);
             settings.clear();
             LoggedUser user = new LoggedUser(this);
@@ -95,16 +159,17 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             GoogleSignInAccount acct = result.getSignInAccount();
             Intent data = new Intent(this, InfoActivity.class);
             try {
-                data.putExtra(Constants.KEY_INTENT_FROM,""+TAG);
+                data.putExtra(Constants.KEY_INTENT_FROM, "" + TAG);
                 data.putExtra(Constants.KEY_NAME, "" + acct.getDisplayName());
                 data.putExtra(Constants.KEY_EMAIL, "" + acct.getEmail());
-                data.putExtra(Constants.KEY_PHOTO_URL,acct.getPhotoUrl());
+                data.putExtra(Constants.KEY_PHOTO_URL, acct.getPhotoUrl());
 
             } catch (Exception e) {
                 e.printStackTrace();
             }
             updateUI(data);
         } else {
+
             // Login Not successfull
             Toast.makeText(this, "Login Failed", Toast.LENGTH_SHORT).show();
             if (result.getStatus().getStatusMessage() != null) {

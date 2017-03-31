@@ -1,5 +1,10 @@
 package com.trio.sos;
 
+import android.*;
+import android.Manifest;
+import android.content.DialogInterface;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -9,15 +14,21 @@ import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import com.trio.sos.helper.Constants;
 import com.trio.sos.repo.Settings;
 
+import java.security.Permission;
 import java.util.ArrayList;
+import java.util.List;
 
-public class SettingsActivity extends AppCompatActivity implements View.OnClickListener,AdapterView.OnItemSelectedListener {
+import pub.devrel.easypermissions.EasyPermissions;
+
+public class SettingsActivity extends AppCompatActivity implements View.OnClickListener,AdapterView.OnItemSelectedListener,EasyPermissions.PermissionCallbacks {
 
     Switch mSmsSwitch,mVideoSwitch,mEmailSwitch;
     Settings mSettings;
     Spinner mVideoDurationSpinner;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +68,24 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        checkPermissions();
+    }
+
+    private void checkPermissions(){
+        if (!EasyPermissions.hasPermissions(this, Manifest.permission.SEND_SMS)){
+            mSmsSwitch.setChecked(false);
+            mSettings.setSmsAlertEnabled(false);
+            if (!mSettings.isEmailAlertEnabled()){
+                mSettings.setSmsAlertEnabled(true);
+                mEmailSwitch.setChecked(true);
+            }
+            mSettings.save();
+        }
+    }
+
+    @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.setting_switch_sms:
@@ -68,7 +97,13 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
                         mSettings.setSmsAlertEnabled(false);
                     }
                 }else{
-                    mSettings.setSmsAlertEnabled(true);
+                    if (EasyPermissions.hasPermissions(this,Manifest.permission.SEND_SMS)){
+                        mSettings.setSmsAlertEnabled(true);
+                    }else {
+                        EasyPermissions.requestPermissions(this
+                                ,"Application needs SMS permission to send SMS to emergency contacts"
+                        , Constants.REQUEST_PERMISSION_SEND_SMS,Manifest.permission.SEND_SMS);
+                    }
                 }
                 break;
             case R.id.setting_switch_email:
@@ -97,8 +132,18 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
     }
 
     @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        EasyPermissions.onRequestPermissionsResult(
+                requestCode, permissions, grantResults, this);
+    }
+
+    @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         mSettings.setVideoDuration((Integer) parent.getItemAtPosition(position));
+        mVideoDurationSpinner.setSelection(mSettings.getVideoDuration()/5-1);
         mSettings.save();
     }
 
@@ -112,5 +157,19 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
     public void onBackPressed() {
         super.onBackPressed();
         finish();
+    }
+
+    @Override
+    public void onPermissionsGranted(int requestCode, List<String> perms) {
+        if (requestCode==Constants.REQUEST_PERMISSION_SEND_SMS) {
+            mSettings.setSmsAlertEnabled(true);
+            mSettings.save();
+        }
+    }
+
+    @Override
+    public void onPermissionsDenied(int requestCode, List<String> perms) {
+        mSmsSwitch.setChecked(false);
+        Toast.makeText(this, "SMS Permission Denied", Toast.LENGTH_SHORT).show();
     }
 }
