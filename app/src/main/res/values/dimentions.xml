@@ -32,5 +32,7 @@
     <dimen name="main_sub_text_size">15sp</dimen>
     
     <dimen name="contact_text_label_padding">10dp</dimen>
+    <dimen name="contact_button_save_height">60dp</dimen>
     <dimen name="contact_text_label_size">15sp</dimen>
+    <dimen name="contact_button_save_text_size">20sp</dimen>
 </resources>

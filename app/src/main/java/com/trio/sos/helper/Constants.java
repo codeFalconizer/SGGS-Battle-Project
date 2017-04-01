@@ -13,9 +13,10 @@ public class Constants {
     public static final int REQUEST_PERMISSION_SEND_SMS = 1002;
     public static final int REQUEST_PERMISSION_READ_STORAGE = 1003;
     public static final int REQUEST_PERMISSION_WRITE_STORAGE = 1004;
-    public static final int REQUEST_PERMISSION_GET_ACCOUNTS = 1005;
+    public static final int REQUEST_PERMISSION_READ_CONTACTS = 1005;
     public static final int REQUEST_GOOGLE_PLAY_SERVICES = 1006;
     public static final int REQUEST_RESOLUTION_SIGN_IN = 1007;
+    public static final int REQUEST_CONTACT_PICKER = 1008;
 
     //Intent Keys
     public static final String KEY_NAME = "NAME";
@@ -32,5 +33,4 @@ public class Constants {
     public static final String GENDER_MALE = "MALE";
     public static final String GENDER_FEMALE = "FEMALE";
     public static final String KEY_INTENT_FROM = "FROM";
-
 }

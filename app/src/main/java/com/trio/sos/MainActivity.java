@@ -101,7 +101,6 @@ public class MainActivity extends Activity implements EasyPermissions.Permission
                 Intent i = new Intent(MainActivity.this, ContactsActivity.class);
                 i.putExtra(Constants.KEY_INTENT_FROM, TAG);
                 startActivity(i);
-                finish();
             }
         });
 

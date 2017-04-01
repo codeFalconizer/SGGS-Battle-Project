@@ -34,6 +34,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     //Permission Deny Flags
     boolean mSmsDenyFlag = false;
+    boolean mLocationDenyFlag = false;
+    boolean mStorageDenyFlag = false;
+    boolean mContactsDenyFlag = false;
     Settings mSettings;
 
     @Override
@@ -80,16 +83,21 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                     , "Application needs SMS permission to send SMS to emergency contacts"
                     , Constants.REQUEST_PERMISSION_SEND_SMS
                     , Manifest.permission.SEND_SMS);
-        } else if (!EasyPermissions.hasPermissions(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+        } else if (!mStorageDenyFlag && !EasyPermissions.hasPermissions(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             EasyPermissions.requestPermissions(this
                     , "Application needs Storage permission to read credentials from storage"
                     , Constants.REQUEST_PERMISSION_WRITE_STORAGE
                     , Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        } else if (!EasyPermissions.hasPermissions(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
+        } else if (!mLocationDenyFlag && !EasyPermissions.hasPermissions(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
             EasyPermissions.requestPermissions(this
                     , "Application needs Location access to report location to Emergency Contacts"
                     , Constants.REQUEST_PERMISSION_LOCATION
                     , Manifest.permission.ACCESS_FINE_LOCATION);
+        } else if (!mContactsDenyFlag && !EasyPermissions.hasPermissions(this,Manifest.permission.READ_CONTACTS)){
+            EasyPermissions.requestPermissions(this
+                    , "Contacts permission is required to enable picking of Emergency Contacts"
+                    , Constants.REQUEST_PERMISSION_READ_CONTACTS
+                    , Manifest.permission.READ_CONTACTS);
         }
     }
 
