@@ -127,6 +127,12 @@ public class MainActivity extends Activity implements EasyPermissions.Permission
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        mFabMenu.collapse();
+    }
+
     private void checkPermissions() {
         //Checking for SMS Permission Changes
         if (!EasyPermissions.hasPermissions(this, android.Manifest.permission.SEND_SMS)) {
