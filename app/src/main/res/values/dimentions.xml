@@ -4,6 +4,9 @@
     <dimen name="edittext_drawable_padding">10dp</dimen>
     <dimen name="radio_padding">10dp</dimen>
     <dimen name="datepicker_padding">20dp</dimen>
+    <dimen name="contactpicker_margin_left">10dp</dimen>
+    <dimen name="contactpicker_margin_right">10dp</dimen>
+    <dimen name="contactpicker_padding">10dp</dimen>
 
     <dimen name="info_label_height">110dp</dimen>
     <dimen name="info_label_size">40sp</dimen>
@@ -27,4 +30,7 @@
     <dimen name="main_text_size_sos">30sp</dimen>
     <dimen name="main_text_size">20sp</dimen>
     <dimen name="main_sub_text_size">15sp</dimen>
+    
+    <dimen name="contact_text_label_padding">10dp</dimen>
+    <dimen name="contact_text_label_size">15sp</dimen>
 </resources>

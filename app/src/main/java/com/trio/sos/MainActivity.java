@@ -34,6 +34,7 @@ public class MainActivity extends Activity implements EasyPermissions.Permission
     FloatingActionButton mSettingButton;
     FloatingActionButton mProfileButton;
     FloatingActionButton mSignOutButton;
+    FloatingActionButton mContactsButton;
     RippleBackground rippleBackground;
     FloatingActionsMenu mFabMenu;
     Button mSosButton;
@@ -52,6 +53,7 @@ public class MainActivity extends Activity implements EasyPermissions.Permission
         mSettingButton = (FloatingActionButton) findViewById(R.id.main_fab_setting);
         mProfileButton = (FloatingActionButton) findViewById(R.id.main_fab_profile);
         mSignOutButton = (FloatingActionButton) findViewById(R.id.main_fab_signout);
+        mContactsButton = (FloatingActionButton) findViewById(R.id.main_fab_contacts);
         mRootLayout = (RelativeLayout) findViewById(R.id.main_layout);
         mFabMenu = (FloatingActionsMenu) findViewById(R.id.main_fab_menu);
 
@@ -86,6 +88,17 @@ public class MainActivity extends Activity implements EasyPermissions.Permission
             public void onClick(View v) {
                 mRootLayout.getBackground().setAlpha(255);
                 Intent i = new Intent(MainActivity.this, LoginActivity.class);
+                i.putExtra(Constants.KEY_INTENT_FROM, TAG);
+                startActivity(i);
+                finish();
+            }
+        });
+
+        mContactsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mRootLayout.getBackground().setAlpha(255);
+                Intent i = new Intent(MainActivity.this, ContactsActivity.class);
                 i.putExtra(Constants.KEY_INTENT_FROM, TAG);
                 startActivity(i);
                 finish();
