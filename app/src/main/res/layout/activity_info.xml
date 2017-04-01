@@ -1,163 +1,170 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:orientation="vertical"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <android.support.design.widget.CoordinatorLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_weight="1"
+        android:layout_height="0dp">
 
-        <TextView
-            android:id="@+id/info_text"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/info_label_height"
-            android:background="@color/colorPrimary"
-            android:fontFamily="cursive"
-            android:gravity="center_horizontal"
-            android:text="@string/label"
-            android:textColor="#FFFFFF"
-            android:textSize="@dimen/info_label_size"
-            android:textStyle="bold" />
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <android.support.v4.widget.Space
-            android:layout_width="match_parent"
-            android:layout_height="50dp" />
-
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <LinearLayout
+            <TextView
+                android:id="@+id/info_text"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_height="@dimen/info_label_height"
+                android:background="@color/colorPrimary"
+                android:fontFamily="cursive"
+                android:gravity="center_horizontal"
+                android:text="@string/label"
+                android:textColor="#FFFFFF"
+                android:textSize="@dimen/info_label_size"
+                android:textStyle="bold" />
 
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/info_text_input_padding">
+            <android.support.v4.widget.Space
+                android:layout_width="match_parent"
+                android:layout_height="50dp" />
 
-                    <android.support.design.widget.TextInputEditText
-                        android:id="@+id/info.edit.name"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:drawableStart="@drawable/ic_action_name"
-                        android:drawablePadding="@dimen/info_text_edit_padding"
-                        android:hint="@string/edit_hint_name"
-                        android:inputType="text" />
-                </android.support.design.widget.TextInputLayout>
-
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/info_text_input_padding">
-
-                    <android.support.design.widget.TextInputEditText
-                        android:id="@+id/info.edit.contact"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:drawableStart="@drawable/ic_action_number"
-                        android:drawablePadding="@dimen/info_text_edit_padding"
-                        android:hint="@string/edit_hint_contact"
-                        android:inputType="number" />
-                </android.support.design.widget.TextInputLayout>
-
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/info_text_input_padding">
-
-                    <android.support.design.widget.TextInputEditText
-                        android:id="@+id/info_edit_email"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:drawableStart="@drawable/ic_action_email"
-                        android:drawablePadding="@dimen/info_text_edit_padding"
-                        android:hint="@string/edit_hint_email"
-                        android:inputType="textEmailAddress" />
-                </android.support.design.widget.TextInputLayout>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/info_text_padding"
-                    android:text="@string/radio_label"
-                    android:textColor="@android:color/black"
-                    android:textSize="@dimen/info_radio_label_size" />
-
-                <RadioGroup
-                    android:id="@+id/info.radio.group"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="@dimen/radio_padding">
-
-                    <RadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingStart="@dimen/info_radio_item_leftPadding"
-                        android:paddingEnd="@dimen/info_radio_item_rightPadding"
-                        android:text="@string/radio_male"
-                        android:checked="true"
-                        android:textSize="@dimen/info_radio_item_size" />
-
-                    <RadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingStart="@dimen/info_radio_item_leftPadding"
-                        android:paddingEnd="@dimen/info_radio_item_rightPadding"
-                        android:text="@string/radio_female"
-                        android:textSize="@dimen/info_radio_item_size" />
-                </RadioGroup>
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="@dimen/edittext_drawable_padding">
+                    android:orientation="vertical">
 
-                    <EditText
-                        android:id="@+id/info.edit.dob"
-                        android:layout_width="0dp"
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:drawableStart="@drawable/ic_action_date"
-                        android:drawablePadding="@dimen/edittext_drawable_padding"
-                        android:enabled="false"
-                        android:hint="@string/edit_hint_dob"
-                        android:padding="@dimen/info_text_edit_padding" />
+                        android:padding="@dimen/info_text_input_padding">
 
-                    <ImageButton
-                        android:id="@+id/info_button_dob"
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/info.edit.name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawablePadding="@dimen/info_text_edit_padding"
+                            android:drawableStart="@drawable/ic_action_name"
+                            android:hint="@string/edit_hint_name"
+                            android:inputType="text" />
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/info_text_input_padding">
+
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/info.edit.contact"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawablePadding="@dimen/info_text_edit_padding"
+                            android:drawableStart="@drawable/ic_action_number"
+                            android:hint="@string/edit_hint_contact"
+                            android:inputType="number" />
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/info_text_input_padding">
+
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/info_edit_email"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawablePadding="@dimen/info_text_edit_padding"
+                            android:drawableStart="@drawable/ic_action_email"
+                            android:hint="@string/edit_hint_email"
+                            android:inputType="textEmailAddress" />
+                    </android.support.design.widget.TextInputLayout>
+
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_action_date"
-                        android:contentDescription="@string/info_circle_desc"/>
+                        android:padding="@dimen/info_text_padding"
+                        android:text="@string/radio_label"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/info_radio_label_size" />
+
+                    <RadioGroup
+                        android:id="@+id/info.radio.group"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/radio_padding">
+
+                        <RadioButton
+                            android:id="@+id/info_radio_button_male"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingEnd="@dimen/info_radio_item_rightPadding"
+                            android:paddingStart="@dimen/info_radio_item_leftPadding"
+                            android:text="@string/radio_male"
+                            android:textSize="@dimen/info_radio_item_size" />
+
+                        <RadioButton
+                            android:id="@+id/info_radio_button_female"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingEnd="@dimen/info_radio_item_rightPadding"
+                            android:paddingStart="@dimen/info_radio_item_leftPadding"
+                            android:text="@string/radio_female"
+                            android:textSize="@dimen/info_radio_item_size" />
+                    </RadioGroup>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/edittext_drawable_padding">
+
+                        <EditText
+                            android:id="@+id/info.edit.dob"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:drawablePadding="@dimen/edittext_drawable_padding"
+                            android:drawableStart="@drawable/ic_action_date"
+                            android:enabled="false"
+                            android:hint="@string/edit_hint_dob"
+                            android:padding="@dimen/info_text_edit_padding" />
+
+                        <ImageButton
+                            android:id="@+id/info_button_dob"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:contentDescription="@string/info_circle_desc"
+                            android:src="@drawable/ic_action_date" />
+                    </LinearLayout>
                 </LinearLayout>
-                <Button
-                    android:id="@+id/info_button_submit"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center|bottom"
-                    android:text="@string/submit"
-                    android:textSize="@dimen/text_submit_size"
-                    android:textColor="@android:color/white"
-                    android:background="@color/colorPrimary"/>
+            </ScrollView>
+        </LinearLayout>
 
-            </LinearLayout>
-        </ScrollView>
-    </LinearLayout>
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/info.profilePicture"
+            android:layout_width="@dimen/info_circleimage_size"
+            android:layout_height="@dimen/info_circleimage_size"
+            android:src="@drawable/user_thumbnail"
+            app:civ_border_color="#000000"
+            app:civ_border_overlay="true"
+            app:civ_border_width="@dimen/info_circleimage_border_width"
+            app:layout_anchor="@id/info_text"
+            app:layout_anchorGravity="center_horizontal|bottom" />
+    </android.support.design.widget.CoordinatorLayout>
+    <Button
+        android:id="@+id/info_button_submit"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/contact_button_save_height"
+        android:text="@string/submit"
+        android:textSize="@dimen/text_submit_size"
+        android:textColor="@android:color/white"
+        android:background="@color/colorPrimary"/>
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/info.profilePicture"
-        android:layout_width="@dimen/info_circleimage_size"
-        android:layout_height="@dimen/info_circleimage_size"
-        android:src="@drawable/user_thumbnail"
-        app:civ_border_color="#000000"
-        app:civ_border_overlay="true"
-        app:civ_border_width="@dimen/info_circleimage_border_width"
-        app:layout_anchor="@id/info_text"
-        app:layout_anchorGravity="center_horizontal|bottom" />
-</android.support.design.widget.CoordinatorLayout>
+</LinearLayout>
