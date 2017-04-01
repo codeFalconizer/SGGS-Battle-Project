@@ -83,22 +83,26 @@ public class EmergencyContacts {
         return people;
     }
 
-    public boolean addContact(String name, String phone, String email, int index) throws Exception {
+    public boolean addContact(Person person, int index) throws Exception {
         try{
             if (!(index < maxPersons) && index >= 0) {
                 return false;
-            } else if (name == null || name.equals("")) {
+            } else if (person.getName() == null || person.getName().equals("")) {
                 throw new Exception("Name cannot be left blank");
-            } else if ((phone == null && email == null)
-                    || (phone == null && email.equals("") )
-                    || (phone.equals("") && email == null)
-                    || (phone.equals("") && email.equals(""))) {
+            } else if ((person.getNumber() == null && person.getEmail() == null)
+                    || (person.getNumber() == null && person.getEmail().equals("") )
+                    || (person.getNumber().equals("") && person.getEmail() == null)
+                    || (person.getNumber().equals("") && person.getEmail().equals(""))) {
                 throw new Exception("Email and Phone No. both cannot be left blank");
             }
-            people.get(index).setName(name);
-            people.get(index).setEmail(email);
-            people.get(index).setNumber(phone);
-            save();
+
+            if (people.isEmpty()){
+                people.add(index,person);
+            }else if (people.size() == 1){
+                people.add(index,person);
+            }else if (people.size()==2){
+                people.set(index,person);
+            }
         }catch (NullPointerException e){
             return false;
         }
@@ -106,7 +110,7 @@ public class EmergencyContacts {
     }
 
     public void save() {
-        for (int index = 0; index < maxPersons; index++) {
+        for (int index = 0; index < people.size(); index++) {
             editor.putString(PREFERENECE_KEY_NAME+index, people.get(index).getName());
             editor.putString(PREFERENECE_KEY_CONTACT_NUMBER+index, people.get(index).getNumber());
             editor.putString(PREFERENECE_KEY_EMAIL+index, people.get(index).getEmail());
