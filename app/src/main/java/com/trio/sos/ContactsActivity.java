@@ -34,15 +34,15 @@ public class ContactsActivity extends AppCompatActivity implements View.OnClickL
     EditText mEditName, mEditContact, mEditEmail;
     Button mSaveButton;
 
-    private class SaveContact extends AsyncTask<String, Void, Integer> {
+    private class SaveContact extends AsyncTask<EmergencyContacts.Person, Void, Integer> {
 
-        private String mMessage="";
+        private String mMessage = "";
         private final int RESULT_SUCCESS = 100;
         private final int RESULT_FAILURE = 200;
 
         @Override
-        protected Integer doInBackground(String... params) {
-            if (params.length != 4) {
+        protected Integer doInBackground(EmergencyContacts.Person... params) {
+            if (params.length != 2) {
                 try {
                     throw new Exception("Invalid Parameters for SaveContacts.exceute()");
                 } catch (Exception e) {
@@ -50,10 +50,12 @@ public class ContactsActivity extends AppCompatActivity implements View.OnClickL
                 }
                 return RESULT_FAILURE;
             }
-            EmergencyContacts.Person person = new EmergencyContacts.Person(params[0], params[1], params[2]);
+            EmergencyContacts.Person person0 = params[0];
+            EmergencyContacts.Person person1 = params[1];
             EmergencyContacts contacts = new EmergencyContacts(ContactsActivity.this);
             try {
-                contacts.addContact(person, Integer.parseInt(params[3]));
+                contacts.addContact(person0, 0);
+                contacts.addContact(person1, 1);
             } catch (Exception e) {
                 mMessage = e.getMessage();
                 e.printStackTrace();
@@ -66,10 +68,18 @@ public class ContactsActivity extends AppCompatActivity implements View.OnClickL
         @Override
         protected void onPostExecute(Integer result) {
             if (RESULT_SUCCESS == result) {
-                //Toast.makeText(ContactsActivity.this, "Contacts Saved", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ContactsActivity.this, "Contacts Saved", Toast.LENGTH_SHORT).show();
+
+                //If this activity is called from LoginActivity start MainActivity on successfull saving
+                if (ContactsActivity.this.getIntent().getStringExtra(Constants.KEY_INTENT_FROM).equals(InfoActivity.TAG)){
+                    Intent i = new Intent(ContactsActivity.this,MainActivity.class);
+                    i.putExtra(Constants.KEY_INTENT_FROM,ContactsActivity.this.TAG);
+                    startActivity(i);
+                    ContactsActivity.this.finish();
+                }
             } else {
                 Toast.makeText(ContactsActivity.this
-                        , "Contact Saving Failed. "+mMessage
+                        , "Contact Saving Failed. " + mMessage
                         , Toast.LENGTH_SHORT).show();
             }
         }
@@ -80,7 +90,7 @@ public class ContactsActivity extends AppCompatActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         try {
             getSupportActionBar().setTitle("Emergency Contact Info");
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             e.printStackTrace();
         }
         setContentView(R.layout.activity_contacts);
@@ -101,12 +111,12 @@ public class ContactsActivity extends AppCompatActivity implements View.OnClickL
         mContactPicker1.setOnClickListener(this);
         mSaveButton.setOnClickListener(this);
 
-        if (getIntent().getStringExtra(Constants.KEY_INTENT_FROM).equals(MainActivity.TAG)){
+        if (getIntent().getStringExtra(Constants.KEY_INTENT_FROM).equals(MainActivity.TAG)) {
             fillData();
         }
     }
 
-    private void fillData(){
+    private void fillData() {
         EmergencyContacts contacts = new EmergencyContacts(this);
         List<EmergencyContacts.Person> list = contacts.getAllContacts();
         mEditName0.setText(list.get(0).getName());
@@ -154,14 +164,11 @@ public class ContactsActivity extends AppCompatActivity implements View.OnClickL
             mEditContact = mEditContact1;
             pickContact();
         } else if (v.getId() == R.id.contact_button_save) {
-            new SaveContact().execute(mEditName0.getText().toString()
-                    , mEditContact0.getText().toString()
-                    , mEditEmail0.getText().toString()
-                    ,"0");
-            new SaveContact().execute(mEditName1.getText().toString()
-                    , mEditContact1.getText().toString()
-                    , mEditEmail1.getText().toString()
-                    ,"1");
+            EmergencyContacts.Person person0 = new EmergencyContacts.Person(mEditName0.getText().toString()
+                    ,mEditContact0.getText().toString(),mEditEmail0.getText().toString());
+            EmergencyContacts.Person person1 = new EmergencyContacts.Person(mEditName1.getText().toString()
+                    ,mEditContact1.getText().toString(),mEditEmail1.getText().toString());
+            new SaveContact().execute(person0,person1);
         }
     }
 
@@ -234,7 +241,7 @@ public class ContactsActivity extends AppCompatActivity implements View.OnClickL
         }
         if (email != null) {
             mEditEmail.setText(email);
-            Log.d(TAG,email);
+            Log.d(TAG, email);
         }
         if (phoneNo != null) {
             mEditContact.setText(phoneNo);

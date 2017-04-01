@@ -189,7 +189,8 @@ public class InfoActivity extends Activity{
         SharedPreferences.Editor edit = route.edit();
         edit.putBoolean(Constants.SHARED_PREFERENCE_KEY_ROUTE,true);
         edit.apply();
-        Intent intent = new Intent(this,MainActivity.class);
+        Intent intent = new Intent(this,ContactsActivity.class);
+        intent.putExtra(Constants.KEY_INTENT_FROM,TAG);
         startActivity(intent);
         finish();
     }
