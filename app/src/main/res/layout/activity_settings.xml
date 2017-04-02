@@ -16,7 +16,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/setting_sms" />
+                android:src="@drawable/ic_action_sms" />
 
             <TextView
                 android:id="@+id/setting_text_sms"
@@ -54,7 +54,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/setting_email" />
+                android:src="@drawable/ic_action_email" />
 
             <TextView
                 android:id="@+id/setting_text_email"
@@ -92,7 +92,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/setting_video" />
+                android:src="@drawable/ic_action_video" />
 
             <TextView
                 android:id="@+id/setting_text_video"
@@ -130,7 +130,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/setting_timer" />
+                android:src="@drawable/ic_action_timer" />
 
             <TextView
                 android:id="@+id/setting_text_video_duration"

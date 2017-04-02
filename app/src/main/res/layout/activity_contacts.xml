@@ -3,155 +3,163 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <android.support.v7.widget.CardView
+
+        <LinearLayout xmlns:card_view="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            card_view:cardCornerRadius="3dp"
-            card_view:cardElevation="2dp"
-            card_view:cardUseCompatPadding="true">
+            android:orientation="vertical">
 
-            <LinearLayout
+            <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/contact_text_label_padding"
-                    android:text="@string/contact_text_card_label_1"
-                    android:textColor="@color/colorAccent"
-                    android:textSize="@dimen/contact_text_label_size" />
+                card_view:cardCornerRadius="3dp"
+                card_view:cardElevation="2dp"
+                card_view:cardUseCompatPadding="true">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/contact_text_label_padding"
+                        android:text="@string/contact_text_card_label_1"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="@dimen/contact_text_label_size" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <EditText
+                            android:id="@+id/contact_edit_name_0"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:drawablePadding="@dimen/edittext_drawable_padding"
+                            android:drawableStart="@drawable/ic_action_name"
+                            android:hint="@string/edit_hint_name" />
+
+                        <ImageButton
+                            android:id="@+id/contact_contact_picker_0"
+                            android:layout_width="50dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginEnd="@dimen/contactpicker_margin_right"
+                            android:layout_marginStart="@dimen/contactpicker_margin_left"
+                            android:background="@drawable/contact_contact_picker"
+                            android:padding="@dimen/contactpicker_padding"
+                            android:contentDescription="@string/contact_description_button_contact_picker"
+                            android:tag="0" />
+
+                    </LinearLayout>
 
                     <EditText
-                        android:id="@+id/contact_edit_name_0"
-                        android:layout_width="0dp"
+                        android:id="@+id/contact_edit_contact_0"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:drawablePadding="@dimen/edittext_drawable_padding"
-                        android:drawableStart="@drawable/ic_action_name"
-                        android:hint="@string/edit_hint_name" />
+                        android:drawableStart="@drawable/ic_action_number"
+                        android:hint="@string/edit_hint_contact"
+                        android:inputType="number" />
 
-                    <ImageButton
-                        android:id="@+id/contact_contact_picker_0"
-                        android:layout_width="50dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginEnd="@dimen/contactpicker_margin_right"
-                        android:layout_marginStart="@dimen/contactpicker_margin_left"
-                        android:background="@drawable/contact_contact_picker"
-                        android:padding="@dimen/contactpicker_padding"
-                        android:tag="0" />
+                    <EditText
+                        android:id="@+id/contact_edit_email_0"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="@dimen/edittext_drawable_padding"
+                        android:drawableStart="@drawable/ic_action_email"
+                        android:hint="@string/edit_hint_email"
+                        android:inputType="textEmailAddress" />
+
 
                 </LinearLayout>
 
-                <EditText
-                    android:id="@+id/contact_edit_contact_0"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:drawablePadding="@dimen/edittext_drawable_padding"
-                    android:drawableStart="@drawable/ic_action_number"
-                    android:hint="@string/edit_hint_contact"
-                    android:inputType="number" />
 
-                <EditText
-                    android:id="@+id/contact_edit_email_0"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:drawablePadding="@dimen/edittext_drawable_padding"
-                    android:drawableStart="@drawable/ic_action_email"
-                    android:hint="@string/edit_hint_email"
-                    android:inputType="textEmailAddress" />
+            </android.support.v7.widget.CardView>
 
-
-            </LinearLayout>
-
-
-        </android.support.v7.widget.CardView>
-
-        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            card_view:cardCornerRadius="2dp"
-            card_view:cardElevation="2dp"
-            card_view:cardUseCompatPadding="true">
-
-            <LinearLayout
+            <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/contact_text_label_padding"
-                    android:text="@string/contact_text_card_label_2"
-                    android:textColor="@color/colorAccent"
-                    android:textSize="@dimen/contact_text_label_size" />
+                card_view:cardCornerRadius="2dp"
+                card_view:cardElevation="2dp"
+                card_view:cardUseCompatPadding="true">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/contact_text_label_padding"
+                        android:text="@string/contact_text_card_label_2"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="@dimen/contact_text_label_size" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <EditText
+                            android:id="@+id/contact_edit_name_1"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:drawablePadding="@dimen/edittext_drawable_padding"
+                            android:drawableStart="@drawable/ic_action_name"
+                            android:hint="@string/edit_hint_name" />
+
+                        <ImageButton
+                            android:id="@+id/contact_contact_picker_1"
+                            android:layout_width="50dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginEnd="@dimen/contactpicker_margin_right"
+                            android:layout_marginStart="@dimen/contactpicker_margin_left"
+                            android:background="@drawable/contact_contact_picker"
+                            android:padding="@dimen/contactpicker_padding"
+                            android:contentDescription="@string/contact_description_button_contact_picker"
+                            android:tag="1" />
+
+                    </LinearLayout>
 
                     <EditText
-                        android:id="@+id/contact_edit_name_1"
-                        android:layout_width="0dp"
+                        android:id="@+id/contact_edit_contact_1"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:drawablePadding="@dimen/edittext_drawable_padding"
-                        android:drawableStart="@drawable/ic_action_name"
-                        android:hint="@string/edit_hint_name" />
+                        android:drawableStart="@drawable/ic_action_number"
+                        android:hint="@string/edit_hint_contact"
+                        android:inputType="number" />
 
-                    <ImageButton
-                        android:id="@+id/contact_contact_picker_1"
-                        android:layout_width="50dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginEnd="@dimen/contactpicker_margin_right"
-                        android:layout_marginStart="@dimen/contactpicker_margin_left"
-                        android:background="@drawable/contact_contact_picker"
-                        android:padding="@dimen/contactpicker_padding"
-                        android:tag="1" />
-
+                    <EditText
+                        android:id="@+id/contact_edit_email_1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="@dimen/edittext_drawable_padding"
+                        android:drawableStart="@drawable/ic_action_email"
+                        android:hint="@string/edit_hint_email"
+                        android:inputType="textEmailAddress" />
                 </LinearLayout>
+            </android.support.v7.widget.CardView>
+        </LinearLayout>
+    </ScrollView>
 
-                <EditText
-                    android:id="@+id/contact_edit_contact_1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:drawablePadding="@dimen/edittext_drawable_padding"
-                    android:drawableStart="@drawable/ic_action_number"
-                    android:hint="@string/edit_hint_contact"
-                    android:inputType="number" />
-
-                <EditText
-                    android:id="@+id/contact_edit_email_1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:drawablePadding="@dimen/edittext_drawable_padding"
-                    android:drawableStart="@drawable/ic_action_email"
-                    android:hint="@string/edit_hint_email"
-                    android:inputType="textEmailAddress" />
-            </LinearLayout>
-        </android.support.v7.widget.CardView>
-    </LinearLayout>
     <Button
         android:id="@+id/contact_button_save"
-        android:text="@string/contact_button_text"
         android:layout_width="match_parent"
         android:layout_height="@dimen/contact_button_save_height"
-        android:textSize="@dimen/contact_button_save_text_size"
         android:layout_alignParentBottom="true"
         android:background="@color/colorPrimary"
-        android:textColor="@android:color/white" />
+        android:text="@string/contact_button_text"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/contact_button_save_text_size" />
 </RelativeLayout>
