@@ -111,8 +111,14 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         if (requestCode == Constants.REQUEST_PERMISSION_SEND_SMS) {
             mSmsDenyFlag = true;
             mSettings.setSmsAlertEnabled(false);
+            mSettings.save();
+        }else if (requestCode == Constants.REQUEST_PERMISSION_WRITE_STORAGE) {
+            mStorageDenyFlag = true;
+        }else if (requestCode == Constants.REQUEST_PERMISSION_LOCATION) {
+            mLocationDenyFlag = true;
+        }else if (requestCode == Constants.REQUEST_PERMISSION_READ_CONTACTS) {
+            mContactsDenyFlag = true;
         }
-        mSettings.save();
         requestPermissions();
     }
 
@@ -170,7 +176,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 data.putExtra(Constants.KEY_INTENT_FROM, "" + TAG);
                 data.putExtra(Constants.KEY_NAME, "" + acct.getDisplayName());
                 data.putExtra(Constants.KEY_EMAIL, "" + acct.getEmail());
-                data.putExtra(Constants.KEY_PHOTO_URL, acct.getPhotoUrl());
+                data.putExtra(Constants.KEY_PHOTO_URL, ""+acct.getPhotoUrl());
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -204,7 +210,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
                 new ResultCallback<Status>() {
                     @Override
-                    public void onResult(Status status) {
+                    public void onResult(@NonNull Status status) {
                     }
                 });
     }
@@ -212,5 +218,11 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private void signIn() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, Constants.REQUEST_SIGN_IN);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 }

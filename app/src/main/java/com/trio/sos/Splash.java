@@ -5,22 +5,18 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 
 import com.trio.sos.helper.Constants;
-
-/**
- * Created by Pranav on 20-03-2017.
- */
 
 public class Splash extends Activity {
 
     public static final String TAG = Splash.class.getName();
-    private static int SPLASH_TIME_OUT = 1000;
+
+    //The delay time for Splash Activity to be in foreground
+    private final int SPLASH_TIME_OUT = 1000;
 
     @Override
-    public void onCreate(Bundle savedInstanceState){
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash);
 
@@ -32,13 +28,21 @@ public class Splash extends Activity {
                 Intent i;
                 SharedPreferences route = getSharedPreferences(
                         Constants.SHARED_PREFERENCE_ROUTE
-                            ,MODE_PRIVATE);
-                if (route.getBoolean(Constants.SHARED_PREFERENCE_KEY_ROUTE,false)){
-                    i = new Intent(Splash.this, MainActivity.class);
-                }else{
-                    i = new Intent(Splash.this, LoginActivity.class);
+                        , MODE_PRIVATE);
+                String str = route.getString(Constants.SHARED_PREFERENCE_KEY_SPLASH_ROUTE
+                        , Constants.SHARED_PREFERENCE_VALUE_SPLASH_ROUTE_LOGIN);
+                switch (str) {
+                    case Constants.SHARED_PREFERENCE_VALUE_SPLASH_ROUTE_MAIN:
+                        i = new Intent(Splash.this, MainActivity.class);
+                        break;
+                    case Constants.SHARED_PREFERENCE_VALUE_SPLASH_ROUTE_LOGIN:
+                        i = new Intent(Splash.this, LoginActivity.class);
+                        break;
+                    default:
+                        i = new Intent(Splash.this, ContactsActivity.class);
+                        break;
                 }
-                i.putExtra(Constants.KEY_INTENT_FROM,TAG);
+                i.putExtra(Constants.KEY_INTENT_FROM, TAG);
                 startActivity(i);
                 finish();
             }

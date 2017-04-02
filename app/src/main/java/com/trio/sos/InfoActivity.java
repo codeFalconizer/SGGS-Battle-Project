@@ -11,8 +11,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,39 +31,40 @@ import java.util.Calendar;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
-public class InfoActivity extends Activity{
+public class InfoActivity extends Activity {
 
     public static final String TAG = InfoActivity.class.getName();
 
-    EditText mEditName,mEditContact,mEditEmail,mEditDob;
+    EditText mEditName, mEditContact, mEditEmail, mEditDob;
     Button mSubmitButton;
     RadioGroup mRadioGroup;
     Intent mData;
     CircleImageView mProfilePicture;
-    ImageButton mDob ;
+    ImageButton mDob;
     Dialog mDatePickerDialog;
     LoggedUser mUser;
     boolean mRadioFlag = false;
 
-    private class LoadImage extends AsyncTask<Uri,Void,Bitmap> {
+    //Async Task to load Profile Picture
+    private class LoadImage extends AsyncTask<Uri, Void, Bitmap> {
 
         @Override
         protected Bitmap doInBackground(Uri... params) {
             String url = params[0].toString();
-            Bitmap bitmap=null;
+            Bitmap bitmap = null;
             try {
                 bitmap = BitmapFactory.decodeStream((InputStream) new URL(url).getContent());
 
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            return  bitmap;
+            return bitmap;
         }
 
         @Override
         protected void onPostExecute(Bitmap bitmap) {
             super.onPostExecute(bitmap);
-            if (bitmap != null){
+            if (bitmap != null) {
                 mProfilePicture.setImageBitmap(bitmap);
             }
         }
@@ -75,39 +74,43 @@ public class InfoActivity extends Activity{
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info);
-        mData=getIntent();
+        mData = getIntent();
         bindActivity();
-        Log.i(TAG,mData.getStringExtra(Constants.KEY_INTENT_FROM));
-        if (mData.getStringExtra(Constants.KEY_INTENT_FROM).equals(LoginActivity.TAG)){
+        Log.i(TAG, mData.getStringExtra(Constants.KEY_INTENT_FROM));
+        if (mData.getStringExtra(Constants.KEY_INTENT_FROM).equals(LoginActivity.TAG)) {
             fillDataFromIntent();
             mUser = new LoggedUser(this);
-        }else if(mData.getStringExtra(Constants.KEY_INTENT_FROM).equals(MainActivity.TAG)){
+        } else if (mData.getStringExtra(Constants.KEY_INTENT_FROM).equals(MainActivity.TAG)) {
             fillDataFromLoggedUser();
         }
 
     }
-    private void fillDataFromIntent(){
-        try{
+
+    //Fill Data sent from LoginActivity in Intent after successfull Login
+    private void fillDataFromIntent() {
+        try {
             mEditName.setText(mData.getStringExtra(Constants.KEY_NAME));
             mEditEmail.setText(mData.getStringExtra(Constants.KEY_EMAIL));
             Uri uri = mData.getParcelableExtra(Constants.KEY_PHOTO_URL);
-            if (uri.toString() != null){
+            if (uri.toString() != null) {
                 new LoadImage().execute(uri);
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private void fillDataFromLoggedUser(){
+    //Fill data from SharedPreferences
+    //This function is invoked to fill the views with already stored profile data
+    private void fillDataFromLoggedUser() {
         LoggedUser user = new LoggedUser(this);
         mEditName.setText(user.getName());
         mEditEmail.setText(user.getEmail());
         mEditDob.setText(user.getDob());
         mEditContact.setText(user.getContactNo());
-        if (user.getGender().equals(Constants.GENDER_MALE)){
+        if (user.getGender().equals(Constants.GENDER_MALE)) {
             mRadioGroup.check(R.id.info_radio_button_male);
-        }else{
+        } else {
             mRadioGroup.check(R.id.info_radio_button_female);
         }
         mEditName.setEnabled(false);
@@ -118,28 +121,27 @@ public class InfoActivity extends Activity{
         mSubmitButton.setVisibility(Button.GONE);
     }
 
-    private void bindActivity(){
+    private void bindActivity() {
         //binding activity to views
-        mEditName= (EditText) findViewById(R.id.info_edit_name);
-        mEditContact= (EditText) findViewById(R.id.info_edit_contact);
-        mEditEmail= (EditText) findViewById(R.id.info_edit_email);
+        mEditName = (EditText) findViewById(R.id.info_edit_name);
+        mEditContact = (EditText) findViewById(R.id.info_edit_contact);
+        mEditEmail = (EditText) findViewById(R.id.info_edit_email);
         mProfilePicture = (CircleImageView) findViewById(R.id.info_profilePicture);
         mDob = (ImageButton) findViewById(R.id.info_button_dob);
         mEditDob = (EditText) findViewById(R.id.info_edit_dob);
         mSubmitButton = (Button) findViewById(R.id.info_button_submit);
-        mRadioGroup  =  (RadioGroup) findViewById(R.id.info_radio_group);
-
+        mRadioGroup = (RadioGroup) findViewById(R.id.info_radio_group);
 
         //Setting Listeners
         mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
-                if (checkedId == R.id.info_radio_button_male){
+                if (checkedId == R.id.info_radio_button_male) {
                     mUser.setGender(Constants.GENDER_MALE);
-                }else{
+                } else {
                     mUser.setGender(Constants.GENDER_FEMALE);
                 }
-                mRadioFlag=true;
+                mRadioFlag = true;
             }
         });
 
@@ -153,7 +155,7 @@ public class InfoActivity extends Activity{
         mSubmitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (validate()){
+                if (isInputValid()) {
                     submit();
                 }
             }
@@ -166,31 +168,32 @@ public class InfoActivity extends Activity{
 
             @Override
             public void onDateChanged(DatePicker datePicker, int year, int month, int dayOfMonth) {
-                mEditDob.setText(""+dayOfMonth+"/ "+(month+1)+"/ "+year);
+                mEditDob.setText("" + dayOfMonth + "/ " + (month + 1) + "/ " + year);
                 mDatePickerDialog.dismiss();
             }
         });
-        mDatePickerDialog =new Dialog(this);
+        mDatePickerDialog = new Dialog(this);
         mDatePickerDialog.setTitle("Choose your Date of Birth");
-        ViewGroup.LayoutParams layoutParams =new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
-        mDatePickerDialog.addContentView(datePicker,layoutParams);
+        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        mDatePickerDialog.addContentView(datePicker, layoutParams);
     }
 
-    private boolean validate(){
+    //Validate input data before saving
+    private boolean isInputValid() {
         boolean flag = true;
-        if (mEditName.getText().toString().length() == 0 ){
+        if (mEditName.getText().toString().length() == 0) {
             mEditName.setError("Name Required");
-            flag=false;
-        }else if (mEditContact.getText().toString().length() == 0 ){
+            flag = false;
+        } else if (mEditContact.getText().toString().length() == 0) {
             mEditContact.setError("Contact No. Required");
-            flag=false;
-        }else if (mEditDob.getText().toString().length() == 0 ){
+            flag = false;
+        } else if (mEditDob.getText().toString().length() == 0) {
             mEditDob.setError("Cannot be left empty");
-            flag=false;
-        }else if (mEditEmail.getText().toString().length() == 0 ){
+            flag = false;
+        } else if (mEditEmail.getText().toString().length() == 0) {
             mEditEmail.setError("Email Required");
-            flag=false;
-        }else if (!mRadioFlag){
+            flag = false;
+        } else if (!mRadioFlag) {
             Toast.makeText(this, "Please select gender", Toast.LENGTH_SHORT).show();
             flag = false;
         }
@@ -203,24 +206,24 @@ public class InfoActivity extends Activity{
         finish();
     }
 
-    private void submit(){
+    private void submit() {
         mUser.setName(mEditName.getText().toString());
         mUser.setEmail(mEditEmail.getText().toString());
         mUser.setContactNo(mEditContact.getText().toString());
         mUser.setDob(mEditDob.getText().toString());
-        if (mData.getParcelableExtra(Constants.KEY_PHOTO_URL) != null){
+        if (mData.getParcelableExtra(Constants.KEY_PHOTO_URL) != null) {
             mUser.setPhotoUrl(mData.getParcelableExtra(Constants.KEY_PHOTO_URL).toString());
-        }else {
+        } else {
             mUser.setPhotoUrl(null);
         }
         mUser.save();
         SharedPreferences route = getSharedPreferences(
-                Constants.SHARED_PREFERENCE_ROUTE,MODE_PRIVATE);
+                Constants.SHARED_PREFERENCE_ROUTE, MODE_PRIVATE);
         SharedPreferences.Editor edit = route.edit();
-        edit.putBoolean(Constants.SHARED_PREFERENCE_KEY_ROUTE,true);
+        edit.putString(Constants.SHARED_PREFERENCE_KEY_SPLASH_ROUTE, Constants.SHARED_PREFERENCE_VALUE_SPLASH_ROUTE_CONTACTS);
         edit.apply();
-        Intent intent = new Intent(this,ContactsActivity.class);
-        intent.putExtra(Constants.KEY_INTENT_FROM,TAG);
+        Intent intent = new Intent(this, ContactsActivity.class);
+        intent.putExtra(Constants.KEY_INTENT_FROM, TAG);
         startActivity(intent);
         finish();
     }

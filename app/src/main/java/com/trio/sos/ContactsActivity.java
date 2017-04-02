@@ -4,7 +4,9 @@ import android.*;
 import android.Manifest;
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.icu.text.IDNA;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -68,12 +70,22 @@ public class ContactsActivity extends AppCompatActivity implements View.OnClickL
         @Override
         protected void onPostExecute(Integer result) {
             if (RESULT_SUCCESS == result) {
-                Toast.makeText(ContactsActivity.this, "Contacts Saved", Toast.LENGTH_SHORT).show();
+
 
                 //If this activity is called from LoginActivity start MainActivity on successfull saving
-                if (ContactsActivity.this.getIntent().getStringExtra(Constants.KEY_INTENT_FROM).equals(InfoActivity.TAG)){
+                //Update SharedPreferences to move to MainActivity on Next Launch
+                Log.d(TAG,ContactsActivity.this.getIntent().getStringExtra(Constants.KEY_INTENT_FROM));
+                String str=ContactsActivity.this.getIntent().getStringExtra(Constants.KEY_INTENT_FROM);
+
+                if (str.equals(Splash.TAG) || str.equals(InfoActivity.TAG)){
+                    Toast.makeText(ContactsActivity.this, "Contacts Saved", Toast.LENGTH_SHORT).show();
+                    SharedPreferences route = getSharedPreferences(
+                            Constants.SHARED_PREFERENCE_ROUTE, MODE_PRIVATE);
+                    SharedPreferences.Editor edit = route.edit();
+                    edit.putString(Constants.SHARED_PREFERENCE_KEY_SPLASH_ROUTE, Constants.SHARED_PREFERENCE_VALUE_SPLASH_ROUTE_MAIN);
                     Intent i = new Intent(ContactsActivity.this,MainActivity.class);
-                    i.putExtra(Constants.KEY_INTENT_FROM,ContactsActivity.this.TAG);
+                    i.putExtra(Constants.KEY_INTENT_FROM,ContactsActivity.TAG);
+                    edit.apply();
                     startActivity(i);
                     ContactsActivity.this.finish();
                 }
@@ -234,6 +246,7 @@ public class ContactsActivity extends AppCompatActivity implements View.OnClickL
             }
             emailCur.close();
         } catch (Exception e) {
+            Toast.makeText(this, "Error Fetching Contact", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
         if (name != null) {

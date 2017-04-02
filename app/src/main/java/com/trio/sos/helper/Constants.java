@@ -27,7 +27,12 @@ public class Constants {
     public static final String SHARED_PREFERENCE_ROUTE="ROUTE";
 
     //SharedPreference Keys
-    public static final String SHARED_PREFERENCE_KEY_ROUTE="DIRECTION";
+    public static final String SHARED_PREFERENCE_KEY_SPLASH_ROUTE="DIRECTION";
+
+    //SharedPreference Values
+    public static final String SHARED_PREFERENCE_VALUE_SPLASH_ROUTE_MAIN="MAIN";
+    public static final String SHARED_PREFERENCE_VALUE_SPLASH_ROUTE_LOGIN="LOGIN";
+    public static final String SHARED_PREFERENCE_VALUE_SPLASH_ROUTE_CONTACTS="INFO";
 
     //Misc
     public static final String GENDER_MALE = "MALE";
