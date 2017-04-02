@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
@@ -74,12 +75,12 @@ public class InfoActivity extends Activity {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info);
+        mUser = new LoggedUser(this);
         mData = getIntent();
         bindActivity();
         Log.i(TAG, mData.getStringExtra(Constants.KEY_INTENT_FROM));
         if (mData.getStringExtra(Constants.KEY_INTENT_FROM).equals(LoginActivity.TAG)) {
             fillDataFromIntent();
-            mUser = new LoggedUser(this);
         } else if (mData.getStringExtra(Constants.KEY_INTENT_FROM).equals(MainActivity.TAG)) {
             fillDataFromLoggedUser();
         }
@@ -113,6 +114,10 @@ public class InfoActivity extends Activity {
         } else {
             mRadioGroup.check(R.id.info_radio_button_female);
         }
+
+        ((RadioButton)findViewById(R.id.info_radio_button_male)).setEnabled(false);
+        ((RadioButton)findViewById(R.id.info_radio_button_female)).setEnabled(false);
+        ((ImageButton)findViewById(R.id.info_button_dob)).setVisibility(Button.GONE);
         mEditName.setEnabled(false);
         mEditEmail.setEnabled(false);
         mEditDob.setEnabled(false);

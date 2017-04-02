@@ -24,6 +24,7 @@
     <string name="main_sos">SOS</string>
     <string name="main_text_location">Your Location</string>
     <string name="main_description_button_label_icon">My Location Icon</string>
+    <string name="main_text_address">Current Address</string>
 
     <string name="contact_text_card_label_1">Emergency Contact 1</string>
     <string name="contact_text_card_label_2">Emergency Contact 2</string>

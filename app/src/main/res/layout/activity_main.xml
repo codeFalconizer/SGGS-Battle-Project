@@ -7,54 +7,106 @@
     android:background="@color/colorPrimary"
     android:orientation="vertical">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="20dp">
 
-        <ImageView
-            android:id="@+id/main_image_location"
+        <LinearLayout
+            android:id="@+id/main_label_address"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_marginEnd="@dimen/main_label_icon_margin_right"
-            android:src="@drawable/main_label_icon_coordinates"
-            android:contentDescription="@string/main_description_button_label_icon"/>
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/main_text_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:drawablePadding="@dimen/main_label_icon_margin_right"
+                android:drawableStart="@drawable/main_label_icon_address"
+                android:gravity="center"
+                android:text="@string/main_text_address"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/main_text_size" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:gravity="center"
+                android:text="Plot No.11, Police Vasahat, Behind Geeta Nagar, Akoli, Akola"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/main_sub_text_size" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/main_sub_text_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/main_sub_text_size" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="50dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="20dp"
+        android:orientation="vertical">
+
         <TextView
             android:id="@+id/main_text_location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/main_image_location"
+            android:layout_gravity="center"
+            android:drawablePadding="@dimen/main_label_icon_margin_right"
+            android:drawableStart="@drawable/main_label_icon_coordinates"
+            android:gravity="center"
             android:text="@string/main_text_location"
             android:textColor="@android:color/white"
             android:textSize="@dimen/main_text_size" />
+
         <TextView
-            android:layout_marginTop="5dp"
             android:id="@+id/main_text_latitude"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/main_text_location"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/main_sub_text_size"
-            android:text="Latitude:19.201215"/>
-        <TextView
+            android:layout_gravity="center"
             android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:text="Latitude :19.201215"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/main_sub_text_size" />
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/main_text_latitude"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:text="Longitude:19.201215"
             android:textColor="@android:color/white"
-            android:textSize="@dimen/main_sub_text_size"
-            android:text="Longitude:19.201215"/>
-    </RelativeLayout>
+            android:textSize="@dimen/main_sub_text_size" />
+    </LinearLayout>
 
     <com.skyfishjy.library.RippleBackground
         android:id="@+id/main_ripple_background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         app:rb_color="@color/colorAccent"
         app:rb_duration="3500"
         app:rb_radius="90dp"
