@@ -17,7 +17,7 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
-import com.trio.sos.helper.Constants;
+import com.trio.sos.util.Constants;
 import com.trio.sos.repo.EmergencyContacts;
 import com.trio.sos.repo.LoggedUser;
 import com.trio.sos.repo.Settings;
@@ -139,7 +139,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     private void checkForSignOutRequest() {
         Intent intent = getIntent();
-        if (intent.getStringExtra(Constants.KEY_INTENT_FROM).equals(MainActivity.TAG)) {
+        if (intent.getStringExtra(Constants.INTENT_KEY_FROM).equals(MainActivity.TAG)) {
             SharedPreferences route = getSharedPreferences(
                     Constants.SHARED_PREFERENCE_ROUTE
                     , MODE_PRIVATE);
@@ -173,7 +173,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             GoogleSignInAccount acct = result.getSignInAccount();
             Intent data = new Intent(this, InfoActivity.class);
             try {
-                data.putExtra(Constants.KEY_INTENT_FROM, "" + TAG);
+                data.putExtra(Constants.INTENT_KEY_FROM, "" + TAG);
                 data.putExtra(Constants.KEY_NAME, "" + acct.getDisplayName());
                 data.putExtra(Constants.KEY_EMAIL, "" + acct.getEmail());
                 data.putExtra(Constants.KEY_PHOTO_URL, ""+acct.getPhotoUrl());

@@ -22,7 +22,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import com.trio.sos.helper.Constants;
+import com.trio.sos.util.Constants;
 import com.trio.sos.repo.LoggedUser;
 
 import java.io.InputStream;
@@ -78,10 +78,10 @@ public class InfoActivity extends Activity {
         mUser = new LoggedUser(this);
         mData = getIntent();
         bindActivity();
-        Log.i(TAG, mData.getStringExtra(Constants.KEY_INTENT_FROM));
-        if (mData.getStringExtra(Constants.KEY_INTENT_FROM).equals(LoginActivity.TAG)) {
+        Log.i(TAG, mData.getStringExtra(Constants.INTENT_KEY_FROM));
+        if (mData.getStringExtra(Constants.INTENT_KEY_FROM).equals(LoginActivity.TAG)) {
             fillDataFromIntent();
-        } else if (mData.getStringExtra(Constants.KEY_INTENT_FROM).equals(MainActivity.TAG)) {
+        } else if (mData.getStringExtra(Constants.INTENT_KEY_FROM).equals(MainActivity.TAG)) {
             fillDataFromLoggedUser();
         }
 
@@ -228,7 +228,7 @@ public class InfoActivity extends Activity {
         edit.putString(Constants.SHARED_PREFERENCE_KEY_SPLASH_ROUTE, Constants.SHARED_PREFERENCE_VALUE_SPLASH_ROUTE_CONTACTS);
         edit.apply();
         Intent intent = new Intent(this, ContactsActivity.class);
-        intent.putExtra(Constants.KEY_INTENT_FROM, TAG);
+        intent.putExtra(Constants.INTENT_KEY_FROM, TAG);
         startActivity(intent);
         finish();
     }

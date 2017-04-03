@@ -12,47 +12,30 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginEnd="20dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp">
+        android:layout_margin="20dp"
+        android:gravity="center"
+        android:orientation="vertical">
 
-        <LinearLayout
-            android:id="@+id/main_label_address"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/main_text_address"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:drawablePadding="@dimen/main_label_icon_margin_right"
-                android:drawableStart="@drawable/main_label_icon_address"
-                android:gravity="center"
-                android:text="@string/main_text_address"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/main_text_size" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="5dp"
-                android:gravity="center"
-                android:text="Plot No.11, Police Vasahat, Behind Geeta Nagar, Akoli, Akola"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/main_sub_text_size" />
-        </LinearLayout>
 
         <TextView
-            android:id="@+id/main_sub_text_address"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="5dp"
+            android:drawablePadding="@dimen/main_label_icon_margin_right"
+            android:drawableStart="@drawable/main_label_icon_address"
             android:gravity="center"
+            android:text="@string/main_text_address"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/main_text_size" />
+
+        <TextView
+            android:id="@+id/main_text_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:text="Getting address..."
             android:textColor="@android:color/white"
             android:textSize="@dimen/main_sub_text_size" />
     </LinearLayout>
@@ -68,7 +51,6 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/main_text_location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -84,19 +66,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="8dp"
             android:gravity="center"
-            android:text="Latitude :19.201215"
+            android:text="Getting Co-ordidates..."
             android:textColor="@android:color/white"
             android:textSize="@dimen/main_sub_text_size" />
 
         <TextView
+            android:id="@+id/main_text_longitude"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="5dp"
             android:gravity="center"
-            android:text="Longitude:19.201215"
+            android:text=""
             android:textColor="@android:color/white"
             android:textSize="@dimen/main_sub_text_size" />
     </LinearLayout>

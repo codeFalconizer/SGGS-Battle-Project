@@ -6,7 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 
-import com.trio.sos.helper.Constants;
+import com.trio.sos.util.Constants;
 
 public class Splash extends Activity {
 
@@ -42,7 +42,7 @@ public class Splash extends Activity {
                         i = new Intent(Splash.this, ContactsActivity.class);
                         break;
                 }
-                i.putExtra(Constants.KEY_INTENT_FROM, TAG);
+                i.putExtra(Constants.INTENT_KEY_FROM, TAG);
                 startActivity(i);
                 finish();
             }

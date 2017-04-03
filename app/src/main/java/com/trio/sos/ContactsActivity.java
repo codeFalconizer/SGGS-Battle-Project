@@ -1,12 +1,10 @@
 package com.trio.sos;
 
-import android.*;
 import android.Manifest;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.icu.text.IDNA;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -20,7 +18,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import com.trio.sos.helper.Constants;
+import com.trio.sos.util.Constants;
 import com.trio.sos.repo.EmergencyContacts;
 
 import java.util.List;
@@ -74,8 +72,8 @@ public class ContactsActivity extends AppCompatActivity implements View.OnClickL
 
                 //If this activity is called from LoginActivity start MainActivity on successfull saving
                 //Update SharedPreferences to move to MainActivity on Next Launch
-                Log.d(TAG,ContactsActivity.this.getIntent().getStringExtra(Constants.KEY_INTENT_FROM));
-                String str=ContactsActivity.this.getIntent().getStringExtra(Constants.KEY_INTENT_FROM);
+                Log.d(TAG,ContactsActivity.this.getIntent().getStringExtra(Constants.INTENT_KEY_FROM));
+                String str=ContactsActivity.this.getIntent().getStringExtra(Constants.INTENT_KEY_FROM);
 
                 if (str.equals(Splash.TAG) || str.equals(InfoActivity.TAG)){
                     Toast.makeText(ContactsActivity.this, "Contacts Saved", Toast.LENGTH_SHORT).show();
@@ -84,7 +82,7 @@ public class ContactsActivity extends AppCompatActivity implements View.OnClickL
                     SharedPreferences.Editor edit = route.edit();
                     edit.putString(Constants.SHARED_PREFERENCE_KEY_SPLASH_ROUTE, Constants.SHARED_PREFERENCE_VALUE_SPLASH_ROUTE_MAIN);
                     Intent i = new Intent(ContactsActivity.this,MainActivity.class);
-                    i.putExtra(Constants.KEY_INTENT_FROM,ContactsActivity.TAG);
+                    i.putExtra(Constants.INTENT_KEY_FROM,ContactsActivity.TAG);
                     edit.apply();
                     startActivity(i);
                     ContactsActivity.this.finish();
@@ -123,7 +121,7 @@ public class ContactsActivity extends AppCompatActivity implements View.OnClickL
         mContactPicker1.setOnClickListener(this);
         mSaveButton.setOnClickListener(this);
 
-        if (getIntent().getStringExtra(Constants.KEY_INTENT_FROM).equals(MainActivity.TAG)) {
+        if (getIntent().getStringExtra(Constants.INTENT_KEY_FROM).equals(MainActivity.TAG)) {
             fillData();
         }
     }

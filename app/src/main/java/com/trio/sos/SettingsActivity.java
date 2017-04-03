@@ -1,10 +1,7 @@
 package com.trio.sos;
 
-import android.*;
 import android.Manifest;
-import android.content.DialogInterface;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -14,10 +11,9 @@ import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.Toast;
 
-import com.trio.sos.helper.Constants;
+import com.trio.sos.util.Constants;
 import com.trio.sos.repo.Settings;
 
-import java.security.Permission;
 import java.util.ArrayList;
 import java.util.List;
 

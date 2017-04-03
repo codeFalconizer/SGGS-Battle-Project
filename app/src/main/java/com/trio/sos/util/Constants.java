@@ -1,17 +1,16 @@
-package com.trio.sos.helper;
+package com.trio.sos.util;
 
 /**
  * Created by Pranav on 29-03-2017.
  */
 
-public class Constants {
+public final class Constants {
 
     //Request Codes
     public static final int REQUEST_SIGN_IN = 999;
     public static final int REQUEST_AUTHORIZATION = 1000;
     public static final int REQUEST_PERMISSION_LOCATION = 1001;
     public static final int REQUEST_PERMISSION_SEND_SMS = 1002;
-    public static final int REQUEST_PERMISSION_READ_STORAGE = 1003;
     public static final int REQUEST_PERMISSION_WRITE_STORAGE = 1004;
     public static final int REQUEST_PERMISSION_READ_CONTACTS = 1005;
     public static final int REQUEST_GOOGLE_PLAY_SERVICES = 1006;
@@ -37,5 +36,11 @@ public class Constants {
     //Misc
     public static final String GENDER_MALE = "MALE";
     public static final String GENDER_FEMALE = "FEMALE";
-    public static final String KEY_INTENT_FROM = "FROM";
+    public static final String INTENT_KEY_FROM = "FROM";
+
+    public static final String INTENT_KEY_LOCATION_DATA ="LOCATION_DATA_EXTRA";
+    public static final String INTENT_KEY_LOCATION_RESULT ="LOCATION_RESULT_EXTRA";
+    public static final int LOCATION_SUCCESS_RESULT = 0;
+    public static final int LOCATION_FAILURE_RESULT = 1;
+    public static final String LOCATION_RECEIVER = "RECEIVER";
 }
