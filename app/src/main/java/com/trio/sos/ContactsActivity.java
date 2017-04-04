@@ -68,25 +68,18 @@ public class ContactsActivity extends AppCompatActivity implements View.OnClickL
         @Override
         protected void onPostExecute(Integer result) {
             if (RESULT_SUCCESS == result) {
-
-
-                //If this activity is called from LoginActivity start MainActivity on successfull saving
-                //Update SharedPreferences to move to MainActivity on Next Launch
-                Log.d(TAG,ContactsActivity.this.getIntent().getStringExtra(Constants.INTENT_KEY_FROM));
-                String str=ContactsActivity.this.getIntent().getStringExtra(Constants.INTENT_KEY_FROM);
-
-                if (str.equals(Splash.TAG) || str.equals(InfoActivity.TAG)){
-                    Toast.makeText(ContactsActivity.this, "Contacts Saved", Toast.LENGTH_SHORT).show();
-                    SharedPreferences route = getSharedPreferences(
-                            Constants.SHARED_PREFERENCE_ROUTE, MODE_PRIVATE);
-                    SharedPreferences.Editor edit = route.edit();
-                    edit.putString(Constants.SHARED_PREFERENCE_KEY_SPLASH_ROUTE, Constants.SHARED_PREFERENCE_VALUE_SPLASH_ROUTE_MAIN);
-                    Intent i = new Intent(ContactsActivity.this,MainActivity.class);
-                    i.putExtra(Constants.INTENT_KEY_FROM,ContactsActivity.TAG);
-                    edit.apply();
-                    startActivity(i);
-                    ContactsActivity.this.finish();
-                }
+                Log.d(TAG, ContactsActivity.this.getIntent().getStringExtra(Constants.INTENT_KEY_FROM));
+                String str = ContactsActivity.this.getIntent().getStringExtra(Constants.INTENT_KEY_FROM);
+                Toast.makeText(ContactsActivity.this, "Contacts Saved", Toast.LENGTH_SHORT).show();
+                SharedPreferences route = getSharedPreferences(
+                        Constants.SHARED_PREFERENCE_ROUTE, MODE_PRIVATE);
+                SharedPreferences.Editor edit = route.edit();
+                edit.putString(Constants.SHARED_PREFERENCE_KEY_SPLASH_ROUTE, Constants.SHARED_PREFERENCE_VALUE_SPLASH_ROUTE_MAIN);
+                Intent i = new Intent(ContactsActivity.this, MainActivity.class);
+                i.putExtra(Constants.INTENT_KEY_FROM, ContactsActivity.TAG);
+                edit.apply();
+                startActivity(i);
+                ContactsActivity.this.finish();
             } else {
                 Toast.makeText(ContactsActivity.this
                         , "Contact Saving Failed. " + mMessage
@@ -175,10 +168,10 @@ public class ContactsActivity extends AppCompatActivity implements View.OnClickL
             pickContact();
         } else if (v.getId() == R.id.contact_button_save) {
             EmergencyContacts.Person person0 = new EmergencyContacts.Person(mEditName0.getText().toString()
-                    ,mEditContact0.getText().toString(),mEditEmail0.getText().toString());
+                    , mEditContact0.getText().toString(), mEditEmail0.getText().toString());
             EmergencyContacts.Person person1 = new EmergencyContacts.Person(mEditName1.getText().toString()
-                    ,mEditContact1.getText().toString(),mEditEmail1.getText().toString());
-            new SaveContact().execute(person0,person1);
+                    , mEditContact1.getText().toString(), mEditEmail1.getText().toString());
+            new SaveContact().execute(person0, person1);
         }
     }
 

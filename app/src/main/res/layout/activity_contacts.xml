@@ -67,7 +67,7 @@
                         android:drawablePadding="@dimen/edittext_drawable_padding"
                         android:drawableStart="@drawable/ic_action_number"
                         android:hint="@string/edit_hint_contact"
-                        android:inputType="number" />
+                        android:inputType="phone" />
 
                     <EditText
                         android:id="@+id/contact_edit_email_0"
@@ -138,7 +138,7 @@
                         android:drawablePadding="@dimen/edittext_drawable_padding"
                         android:drawableStart="@drawable/ic_action_number"
                         android:hint="@string/edit_hint_contact"
-                        android:inputType="number" />
+                        android:inputType="phone" />
 
                     <EditText
                         android:id="@+id/contact_edit_email_1"

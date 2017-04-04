@@ -5,6 +5,9 @@ package com.trio.sos.util;
  */
 
 public final class Constants {
+    //Result Codes
+    public static final int SUCCESS=1;
+    public static final int FAILURE=2;
 
     //Request Codes
     public static final int REQUEST_SIGN_IN = 999;

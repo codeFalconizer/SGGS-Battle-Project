@@ -17,7 +17,7 @@ public class SmsUtil {
         if (location == null){
             return null;
         }else{
-            message = "Sent from Save Me app\n"
+            message = "Sent from Save Me app"
                     + "\nShow location on Map: " + mMapsUrl + location.getLatitude() + "," + location.getLongitude();
         }
         return message;
