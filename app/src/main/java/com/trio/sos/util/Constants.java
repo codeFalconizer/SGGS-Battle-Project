@@ -6,8 +6,8 @@ package com.trio.sos.util;
 
 public final class Constants {
     //Result Codes
-    public static final int SUCCESS=1;
-    public static final int FAILURE=2;
+    public static final int SUCCESS = 1;
+    public static final int FAILURE = 2;
 
     //Permission Request Codes
     public static final int REQUEST_SIGN_IN = 999;
@@ -29,23 +29,24 @@ public final class Constants {
     public static final String KEY_PHOTO_URL = "PHOTOURL";
 
     //SharedPreferences Files
-    public static final String SHARED_PREFERENCE_ROUTE="ROUTE";
+    public static final String SHARED_PREFERENCE_ROUTE = "ROUTE";
 
     //SharedPreference Keys
-    public static final String SHARED_PREFERENCE_KEY_SPLASH_ROUTE="DIRECTION";
+    public static final String SHARED_PREFERENCE_KEY_SPLASH_ROUTE = "DIRECTION";
 
     //SharedPreference Values
-    public static final String SHARED_PREFERENCE_VALUE_SPLASH_ROUTE_MAIN="MAIN";
-    public static final String SHARED_PREFERENCE_VALUE_SPLASH_ROUTE_LOGIN="LOGIN";
-    public static final String SHARED_PREFERENCE_VALUE_SPLASH_ROUTE_CONTACTS="INFO";
+    public static final String SHARED_PREFERENCE_VALUE_SPLASH_ROUTE_MAIN = "MAIN";
+    public static final String SHARED_PREFERENCE_VALUE_SPLASH_ROUTE_LOGIN = "LOGIN";
+    public static final String SHARED_PREFERENCE_VALUE_SPLASH_ROUTE_CONTACTS = "INFO";
 
     //Misc
     public static final String GENDER_MALE = "MALE";
     public static final String GENDER_FEMALE = "FEMALE";
     public static final String INTENT_KEY_FROM = "FROM";
+    public static final String MIME_VIDEO = "video.mp4";
 
-    public static final String INTENT_KEY_LOCATION_DATA ="LOCATION_DATA_EXTRA";
-    public static final String INTENT_KEY_LOCATION_RESULT ="LOCATION_RESULT_EXTRA";
+    public static final String INTENT_KEY_LOCATION_DATA = "LOCATION_DATA_EXTRA";
+    public static final String INTENT_KEY_LOCATION_RESULT = "LOCATION_RESULT_EXTRA";
     public static final int LOCATION_SUCCESS_RESULT = 0;
     public static final int LOCATION_FAILURE_RESULT = 1;
     public static final String LOCATION_RECEIVER = "RECEIVER";

@@ -31,7 +31,6 @@ public class LoggedUser {
     public LoggedUser(Context context) {
         mContext = context;
         sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCE_PROFILE, Context.MODE_PRIVATE);
-        editor = sharedPreferences.edit();
         setName(sharedPreferences.getString(PREFERENCE_KEY_NAME, ""));
         setEmail(sharedPreferences.getString(PREFERENCE_KEY_EMAIL, ""));
         setContactNo(sharedPreferences.getString(PREFERENCE_KEY_CONTACT_NUMBER, ""));
@@ -41,6 +40,7 @@ public class LoggedUser {
     }
 
     public void save() {
+        editor = sharedPreferences.edit();
         editor.putString(PREFERENCE_KEY_NAME, getName());
         editor.putString(PREFERENCE_KEY_CONTACT_NUMBER, getContactNo());
         editor.putString(PREFERENCE_KEY_EMAIL, getEmail());

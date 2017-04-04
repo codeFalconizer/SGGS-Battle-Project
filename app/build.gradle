@@ -17,6 +17,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    configurations.all {
+        resolutionStrategy.force 'com.google.code.findbugs:jsr305:1.3.9'
+    }
 }
 
 dependencies {
@@ -28,9 +31,17 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.android.support:design:25.3.1'
-    compile 'com.google.android.gms:play-services-auth:10.2.1'
     compile 'com.android.support:support-v4:25.3.1'
     testCompile 'junit:junit:4.12'
+
+    //Google Apis
+    compile 'com.google.android.gms:play-services-auth:10.2.1'
+    compile('com.google.apis:google-api-services-drive:v2-rev260-1.22.0') {
+        exclude group: 'org.apache.httpcomponents'
+    }
+    compile('com.google.api-client:google-api-client-android:1.22.0') {
+        exclude group: 'org.apache.httpcomponents'
+    }
 
     //Third Party Design Library
     compile 'com.skyfishjy.ripplebackground:library:1.0.1'
