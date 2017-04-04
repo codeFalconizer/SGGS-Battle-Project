@@ -330,9 +330,10 @@ public class MainActivity extends Activity implements EasyPermissions.Permission
     protected void onResume() {
         super.onResume();
         mFabMenu.collapse();
+        mSettings.update();
+        rippleBackground.startRippleAnimation();
         checkPermissions();
         checkLocationService();
-        rippleBackground.startRippleAnimation();
     }
 
     @Override

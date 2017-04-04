@@ -24,11 +24,15 @@ public class Settings {
 
     public Settings(Context context){
         mContext = context;
-        SharedPreferences settings = context.getSharedPreferences(SHARED_PREFERENCE_SETTINGS,Context.MODE_PRIVATE);
+        update();
+    }
+
+    public void update(){
+        SharedPreferences settings = mContext.getSharedPreferences(SHARED_PREFERENCE_SETTINGS,Context.MODE_PRIVATE);
         setEmailAlertEnabled(settings.getBoolean(PREFERENCE_KEY_EMAIL,true));
         setSmsAlertEnabled(settings.getBoolean(PREFERENCE_KEY_SMS,true));
         setVideoAlertEnabled(settings.getBoolean(PREFERENCE_KEY_VIDEO,true));
-        setVideoDuration(settings.getInt(PREFERENCE_KEY_VIDEO_DURATION,10));
+        setVideoDuration(settings.getInt(PREFERENCE_KEY_VIDEO_DURATION,5));
     }
 
     //Method to be called after the installation of application
@@ -87,6 +91,6 @@ public class Settings {
                         ,Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.clear();
-        editor.commit();
+        editor.apply();
     }
 }
