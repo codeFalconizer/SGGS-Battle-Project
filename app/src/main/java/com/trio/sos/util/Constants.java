@@ -9,13 +9,16 @@ public final class Constants {
     public static final int SUCCESS=1;
     public static final int FAILURE=2;
 
-    //Request Codes
+    //Permission Request Codes
     public static final int REQUEST_SIGN_IN = 999;
     public static final int REQUEST_AUTHORIZATION = 1000;
     public static final int REQUEST_PERMISSION_LOCATION = 1001;
     public static final int REQUEST_PERMISSION_SEND_SMS = 1002;
     public static final int REQUEST_PERMISSION_WRITE_STORAGE = 1004;
     public static final int REQUEST_PERMISSION_READ_CONTACTS = 1005;
+
+    //Request Codes
+    public static final int REQUEST_VIDEO_CAPTURE = 1003;
     public static final int REQUEST_GOOGLE_PLAY_SERVICES = 1006;
     public static final int REQUEST_RESOLUTION_SIGN_IN = 1007;
     public static final int REQUEST_CONTACT_PICKER = 1008;

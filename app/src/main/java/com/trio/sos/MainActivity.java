@@ -8,14 +8,17 @@ import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.os.ResultReceiver;
 import android.support.v7.app.AlertDialog;
 import android.telephony.SmsManager;
+import android.telephony.SmsMessage;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -58,6 +61,8 @@ public class MainActivity extends Activity implements EasyPermissions.Permission
     Location currentBestLocation;
     private AddressResultReceiver mResultReceiver;
     EmergencyContacts contact;
+    AlertDialog mVideoAlertDialog;
+    AlertDialog mSmsAlertDialog;
 
     private class AddressResultReceiver extends ResultReceiver {
         AddressResultReceiver(Handler handler) {
@@ -191,16 +196,72 @@ public class MainActivity extends Activity implements EasyPermissions.Permission
 
     }
 
+    private void constructAlertDialogs() {
+        AlertDialog.Builder video = new AlertDialog.Builder(this);
+        video.setCancelable(false);
+        video.setMessage("Sending video is enabled. Do you really want to send video " +
+                "or continue with other types of alerts that are selected.");
+        video.setNegativeButton("Other", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        video.setPositiveButton("Yes, Send Video", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+                intent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, mSettings.getVideoDuration());
+                if(intent.resolveActivity(getPackageManager()) != null){
+                    startActivityForResult(intent, Constants.REQUEST_VIDEO_CAPTURE);
+                }
+            }
+        });
+        mVideoAlertDialog = video.create();
+
+        AlertDialog.Builder sms = new AlertDialog.Builder(this);
+        sms.setCancelable(false);
+        video.setMessage("The application is about to send SMS. This could cause you money. " +
+                "Do you want to continue?");
+        sms.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                SmsUtil smsUtil = new SmsUtil();
+                smsUtil.setLocation(currentBestLocation);
+                new SendSMS().execute(smsUtil.getMessage());
+            }
+        });
+        sms.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        mSmsAlertDialog = sms.create();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case Constants.REQUEST_VIDEO_CAPTURE:
+                if (resultCode == RESULT_OK) {
+                    Uri videoUri = data.getData();
+                }
+        }
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //Initialising instance variables
         mLocationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-        //Initialising Settings object
         mSettings = new Settings(this);
         contact = new EmergencyContacts(this);
         mResultReceiver = new AddressResultReceiver(new Handler());
-        Log.d(TAG, mResultReceiver.toString());
+
         //Binding activity to views
         rippleBackground = (RippleBackground) findViewById(R.id.main_ripple_background);
         mSosButton = (Button) findViewById(R.id.main_button_sos);
@@ -213,18 +274,15 @@ public class MainActivity extends Activity implements EasyPermissions.Permission
         mTextAddress = (TextView) findViewById(R.id.main_text_address);
         mTextLatitude = (TextView) findViewById(R.id.main_text_latitude);
         mTextLongitude = (TextView) findViewById(R.id.main_text_longitude);
+
+        constructAlertDialogs();
+
         //Setting listeners
         mSosButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SmsUtil smsutil = new SmsUtil();
-                if (currentBestLocation != null) {
-                    if (mSettings.isSmsAlertEnabled()) {
-                        smsutil.setLocation(currentBestLocation);
-                        new SendSMS().execute(smsutil.getMessage());
-                    }
-                } else {
-                    Toast.makeText(MainActivity.this, "Still Fetching Location", Toast.LENGTH_SHORT).show();
+                if (mSettings.isVideoAlertEnabled()) {
+                    mVideoAlertDialog.show();
                 }
             }
         });
@@ -430,20 +488,19 @@ public class MainActivity extends Activity implements EasyPermissions.Permission
         try {
             gps_enabled = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
         } catch (Exception ex) {
-            ex.printStackTrace();
+            Log.e(TAG, "Error checking availability of GPS Provider", ex);
         }
 
         try {
             network_enabled = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
         } catch (Exception ex) {
-            ex.printStackTrace();
+            Log.e(TAG, "Error checking availability of Network Provider", ex);
         }
 
         if (!gps_enabled && !network_enabled) {
             AlertDialog.Builder dialog = new AlertDialog.Builder(this);
             dialog.setCancelable(false);
             dialog.setMessage("Location Service Disabled.Please turn on Location.");
-
             dialog.setPositiveButton("Location Settings", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface paramDialogInterface, int paramInt) {
