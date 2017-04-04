@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <android.support.design.widget.CoordinatorLayout
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <android.support.design.widget.CoordinatorLayout xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_weight="1"
-        android:layout_height="0dp">
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -81,6 +80,7 @@
                             android:layout_height="wrap_content"
                             android:drawablePadding="@dimen/info_text_edit_padding"
                             android:drawableStart="@drawable/ic_action_email"
+                            android:enabled="false"
                             android:hint="@string/edit_hint_email"
                             android:inputType="textEmailAddress" />
                     </android.support.design.widget.TextInputLayout>
@@ -158,13 +158,14 @@
             app:layout_anchor="@id/info_text"
             app:layout_anchorGravity="center_horizontal|bottom" />
     </android.support.design.widget.CoordinatorLayout>
+
     <Button
         android:id="@+id/info_button_submit"
         android:layout_width="match_parent"
         android:layout_height="@dimen/contact_button_save_height"
+        android:background="@color/colorPrimary"
         android:text="@string/submit"
-        android:textSize="@dimen/text_submit_size"
         android:textColor="@android:color/white"
-        android:background="@color/colorPrimary"/>
+        android:textSize="@dimen/text_submit_size" />
 
 </LinearLayout>

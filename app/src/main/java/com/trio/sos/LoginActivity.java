@@ -6,8 +6,10 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
+
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -17,10 +19,10 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
-import com.trio.sos.util.Constants;
 import com.trio.sos.repo.EmergencyContacts;
 import com.trio.sos.repo.LoggedUser;
 import com.trio.sos.repo.Settings;
+import com.trio.sos.util.Constants;
 
 import java.util.List;
 
@@ -93,7 +95,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                     , "Application needs Location access to report location to Emergency Contacts"
                     , Constants.REQUEST_PERMISSION_LOCATION
                     , Manifest.permission.ACCESS_FINE_LOCATION);
-        } else if (!mContactsDenyFlag && !EasyPermissions.hasPermissions(this,Manifest.permission.READ_CONTACTS)){
+        } else if (!mContactsDenyFlag && !EasyPermissions.hasPermissions(this, Manifest.permission.READ_CONTACTS)) {
             EasyPermissions.requestPermissions(this
                     , "Contacts permission is required to enable picking of Emergency Contacts"
                     , Constants.REQUEST_PERMISSION_READ_CONTACTS
@@ -112,11 +114,11 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             mSmsDenyFlag = true;
             mSettings.setSmsAlertEnabled(false);
             mSettings.save();
-        }else if (requestCode == Constants.REQUEST_PERMISSION_WRITE_STORAGE) {
+        } else if (requestCode == Constants.REQUEST_PERMISSION_WRITE_STORAGE) {
             mStorageDenyFlag = true;
-        }else if (requestCode == Constants.REQUEST_PERMISSION_LOCATION) {
+        } else if (requestCode == Constants.REQUEST_PERMISSION_LOCATION) {
             mLocationDenyFlag = true;
-        }else if (requestCode == Constants.REQUEST_PERMISSION_READ_CONTACTS) {
+        } else if (requestCode == Constants.REQUEST_PERMISSION_READ_CONTACTS) {
             mContactsDenyFlag = true;
         }
         requestPermissions();
@@ -172,13 +174,18 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         if (result.isSuccess()) {
             GoogleSignInAccount acct = result.getSignInAccount();
             Intent data = new Intent(this, InfoActivity.class);
+            try{
+                data.putExtra(Constants.KEY_EMAIL, "" + acct.getEmail());
+            }catch (NullPointerException e){
+                Log.e(TAG,"Null value returned for Email during login",e);
+                Toast.makeText(this, "Login Failed", Toast.LENGTH_SHORT).show();
+                return;
+            }
             try {
                 data.putExtra(Constants.INTENT_KEY_FROM, "" + TAG);
                 data.putExtra(Constants.KEY_NAME, "" + acct.getDisplayName());
-                data.putExtra(Constants.KEY_EMAIL, "" + acct.getEmail());
-                data.putExtra(Constants.KEY_PHOTO_URL, ""+acct.getPhotoUrl());
-
-            } catch (Exception e) {
+                data.putExtra(Constants.KEY_PHOTO_URL, "" + acct.getPhotoUrl());
+            }catch (NullPointerException e){
                 e.printStackTrace();
             }
             updateUI(data);

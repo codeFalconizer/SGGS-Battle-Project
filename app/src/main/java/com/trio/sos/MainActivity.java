@@ -9,7 +9,6 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -232,9 +231,9 @@ public class MainActivity extends Activity implements EasyPermissions.Permission
         mSettingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this, SettingsActivity.class);
                 mRootLayout.getBackground().setAlpha(255);
                 mSignOutButton.getBackground().setAlpha(255);
-                Intent i = new Intent(MainActivity.this, SettingsActivity.class);
                 startActivity(i);
             }
         });
@@ -242,10 +241,10 @@ public class MainActivity extends Activity implements EasyPermissions.Permission
         mProfileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mRootLayout.getBackground().setAlpha(255);
-                mSignOutButton.getBackground().setAlpha(255);
                 Intent i = new Intent(MainActivity.this, InfoActivity.class);
                 i.putExtra(Constants.INTENT_KEY_FROM, TAG);
+                mRootLayout.getBackground().setAlpha(255);
+                mSignOutButton.getBackground().setAlpha(255);
                 startActivity(i);
             }
         });
@@ -253,10 +252,10 @@ public class MainActivity extends Activity implements EasyPermissions.Permission
         mSignOutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mRootLayout.getBackground().setAlpha(255);
-                mSignOutButton.getBackground().setAlpha(255);
                 Intent i = new Intent(MainActivity.this, LoginActivity.class);
                 i.putExtra(Constants.INTENT_KEY_FROM, TAG);
+                mRootLayout.getBackground().setAlpha(255);
+                mSignOutButton.getBackground().setAlpha(255);
                 startActivity(i);
                 finish();
             }
@@ -265,10 +264,10 @@ public class MainActivity extends Activity implements EasyPermissions.Permission
         mContactsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mRootLayout.getBackground().setAlpha(255);
-                mSignOutButton.getBackground().setAlpha(255);
                 Intent i = new Intent(MainActivity.this, ContactsActivity.class);
                 i.putExtra(Constants.INTENT_KEY_FROM, TAG);
+                mRootLayout.getBackground().setAlpha(255);
+                mSignOutButton.getBackground().setAlpha(255);
                 startActivity(i);
             }
         });
