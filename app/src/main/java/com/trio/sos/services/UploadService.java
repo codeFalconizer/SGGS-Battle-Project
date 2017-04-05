@@ -43,9 +43,9 @@ import javax.annotation.Nonnull;
 public class UploadService extends IntentService {
 
     public static final String TAG = UploadService.class.getName();
-    private static final String ACTION_UPLOAD = "com.trio.sos.services.action.UPLOAD";
-    private static final String EXTRA_KEY_FILE_PATH = "com.trio.sos.action.FILE";
-    public static final String INTENT_KEY_UPLOAD_FAILURE = "FAILURE";
+    private static final String ACTION_UPLOAD = "UPLOAD";
+    private static final String EXTRA_KEY_FILE_PATH = "FILE_PATH";
+    private static final String EXTRA_KEY_AUTHORIZATION_RECEIVER = "AUTHORIZATION_RECEIVER";
 
     protected ResultReceiver mReceiver;
 
@@ -78,9 +78,13 @@ public class UploadService extends IntentService {
         super(TAG);
     }
 
-    public static void startActionUpload(@NonNull Context context, @NonNull String path) {
+    public static void startActionUpload(@NonNull Context context
+            , @NonNull Bundle bundle) {
+        String path = bundle.getString(Constants.BUNDLE_KEY_FILE_PATH);
+        ResultReceiver receiver = bundle.getParcelable(Constants.BUNDLE_KEY_AUTHORIZATION_RECEIVER);
         Intent intent = new Intent(context, UploadService.class);
         intent.setAction(ACTION_UPLOAD);
+        intent.putExtra(EXTRA_KEY_AUTHORIZATION_RECEIVER, receiver);
         intent.putExtra(EXTRA_KEY_FILE_PATH, path);
         context.startService(intent);
     }
@@ -91,17 +95,15 @@ public class UploadService extends IntentService {
         if (intent != null) {
             final String action = intent.getAction();
             if (ACTION_UPLOAD.equals(action)) {
+                ResultReceiver receiver = intent.getParcelableExtra(EXTRA_KEY_AUTHORIZATION_RECEIVER);
                 String path = intent.getStringExtra(EXTRA_KEY_FILE_PATH);
-                handleUpload(path);
+                handleUpload(path,receiver);
             }
         }
     }
 
-    private void handleUpload(String path) {
-        if (path == null){
-            Log.i(TAG,"Null path Received as parameter");
-            return;
-        }
+    private void handleUpload(@NonNull String path,@NonNull ResultReceiver receiver) {
+        mReceiver = receiver;
         GoogleObjects objects= (GoogleObjects) getApplicationContext();
         Drive mDriveService=objects.getDriveService();
 
@@ -121,6 +123,7 @@ public class UploadService extends IntentService {
             File driveFile = insert.execute();
         } catch (UserRecoverableAuthIOException e) {
             e.printStackTrace();
+            deliverResultToReceiver(Constants.FAILURE,e.getIntent());
 
         } catch (IOException e){
             e.printStackTrace();
@@ -129,7 +132,7 @@ public class UploadService extends IntentService {
 
     private void deliverResultToReceiver(int resultCode, Intent intent) {
         Bundle bundle = new Bundle();
-        bundle.putParcelable("INTENT",intent);
+        bundle.putParcelable(Constants.BUNDLE_KEY_INTENT,intent);
         mReceiver.send(resultCode, bundle);
     }
 }

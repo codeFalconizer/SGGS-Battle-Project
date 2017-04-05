@@ -71,7 +71,7 @@ public class FetchAddressIntentService extends IntentService {
                 errorMessage = "No Address found";
                 Log.e(TAG, errorMessage);
             }
-            deliverResultToReceiver(Constants.LOCATION_FAILURE_RESULT, errorMessage);
+            deliverResultToReceiver(Constants.FAILURE, errorMessage);
         } else {
             Address address = addresses.get(0);
             ArrayList<String> addressFragments = new ArrayList<String>();
@@ -82,7 +82,7 @@ public class FetchAddressIntentService extends IntentService {
                 addressFragments.add(address.getAddressLine(i));
             }
             //Log.i(TAG, "Address Found");
-            deliverResultToReceiver(Constants.LOCATION_SUCCESS_RESULT,
+            deliverResultToReceiver(Constants.SUCCESS,
                     TextUtils.join(System.getProperty("line.separator"),
                             addressFragments));
         }

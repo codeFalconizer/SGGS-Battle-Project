@@ -43,12 +43,17 @@ public final class Constants {
     //Misc
     public static final String GENDER_MALE = "MALE";
     public static final String GENDER_FEMALE = "FEMALE";
-    public static final String INTENT_KEY_FROM = "FROM";
     public static final String MIME_VIDEO = "video/mp4";
+    public static final int FILE_TYPE = 1;
 
+    public static final String INTENT_KEY_FROM = "FROM";
     public static final String INTENT_KEY_LOCATION_DATA = "LOCATION_DATA_EXTRA";
     public static final String INTENT_KEY_LOCATION_RESULT = "LOCATION_RESULT_EXTRA";
-    public static final int LOCATION_SUCCESS_RESULT = 0;
-    public static final int LOCATION_FAILURE_RESULT = 1;
-    public static final String LOCATION_RECEIVER = "RECEIVER";
+    public static final String LOCATION_RECEIVER = "ADDRESS_RECEIVER";
+
+    //Bundle Keys
+    public static final String BUNDLE_KEY_FILE_PATH = "FILE_PATH";
+    public static final String BUNDLE_KEY_AUTHORIZATION_RECEIVER = "AUTH_RECEIVER";
+    public static final String BUNDLE_KEY_INTENT = "AUTH_INTENT";
+
 }

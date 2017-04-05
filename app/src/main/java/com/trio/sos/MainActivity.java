@@ -15,10 +15,10 @@ import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.FileProvider;
 import android.support.v4.os.ResultReceiver;
 import android.support.v7.app.AlertDialog;
 import android.telephony.SmsManager;
-import android.telephony.SmsMessage;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -29,40 +29,69 @@ import android.widget.Toast;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
+import com.google.api.client.extensions.android.http.AndroidHttp;
+import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
+import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.api.client.util.ExponentialBackOff;
+import com.google.api.services.drive.Drive;
+import com.google.api.services.drive.DriveScopes;
 import com.skyfishjy.library.RippleBackground;
 import com.trio.sos.repo.EmergencyContacts;
+import com.trio.sos.repo.LoggedUser;
 import com.trio.sos.repo.Settings;
 import com.trio.sos.services.FetchAddressIntentService;
+import com.trio.sos.services.UploadService;
 import com.trio.sos.util.Constants;
+import com.trio.sos.util.FileUtils;
 import com.trio.sos.util.SmsUtil;
 
+import java.io.File;
+import java.util.Arrays;
 import java.util.List;
 
 import pub.devrel.easypermissions.EasyPermissions;
 
 
 public class MainActivity extends Activity implements EasyPermissions.PermissionCallbacks, LocationListener {
-    public static final String TAG = MainActivity.class.getName();
 
+    public static final String TAG = MainActivity.class.getName();
     private static final int MINUTES = 1000 * 60;
-    RelativeLayout mRootLayout;
-    FloatingActionButton mSettingButton;
-    FloatingActionButton mProfileButton;
-    FloatingActionButton mSignOutButton;
-    FloatingActionButton mContactsButton;
-    RippleBackground rippleBackground;
-    FloatingActionsMenu mFabMenu;
-    TextView mTextAddress;
-    TextView mTextLatitude;
-    TextView mTextLongitude;
-    Button mSosButton;
-    Settings mSettings;
-    LocationManager mLocationManager;
-    Location currentBestLocation;
+    private static final String[] SCOPES = {DriveScopes.DRIVE_FILE, DriveScopes.DRIVE_METADATA};
+
+    private RelativeLayout mRootLayout;
+    private FloatingActionButton mSignOutButton;
+    private RippleBackground rippleBackground;
+    private FloatingActionsMenu mFabMenu;
+    private TextView mTextAddress;
+    private TextView mTextLatitude;
+    private TextView mTextLongitude;
+    private Button mSosButton;
+    private AlertDialog mVideoAlertDialog;
+    private AlertDialog mSmsAlertDialog;
+
+    private Settings mSettings;
+    private LocationManager mLocationManager;
+    private Location currentBestLocation;
     private AddressResultReceiver mResultReceiver;
-    EmergencyContacts contact;
-    AlertDialog mVideoAlertDialog;
-    AlertDialog mSmsAlertDialog;
+    private EmergencyContacts contact;
+
+    private String path;
+
+    private class AuthorisationReceiver extends ResultReceiver {
+
+        AuthorisationReceiver(Handler handler) {
+            super(handler);
+        }
+
+        @Override
+        protected void onReceiveResult(int resultCode, Bundle resultData) {
+            super.onReceiveResult(resultCode, resultData);
+            if (resultCode == Constants.FAILURE){
+                Intent intent = resultData.getParcelable(Constants.BUNDLE_KEY_INTENT);
+                startActivityForResult(intent,Constants.REQUEST_AUTHORIZATION);
+            }
+        }
+    }
 
     private class AddressResultReceiver extends ResultReceiver {
         AddressResultReceiver(Handler handler) {
@@ -71,8 +100,8 @@ public class MainActivity extends Activity implements EasyPermissions.Permission
 
         @Override
         protected void onReceiveResult(int resultCode, Bundle resultData) {
-            String mAddressOutput = resultData.getString(Constants.INTENT_KEY_LOCATION_RESULT);
-            if (resultCode == Constants.LOCATION_SUCCESS_RESULT) {
+            if (resultCode == Constants.SUCCESS) {
+                String mAddressOutput = resultData.getString(Constants.INTENT_KEY_LOCATION_RESULT);
                 mTextAddress.setText(mAddressOutput);
             }
         }
@@ -198,7 +227,7 @@ public class MainActivity extends Activity implements EasyPermissions.Permission
 
     private void constructAlertDialogs() {
         AlertDialog.Builder video = new AlertDialog.Builder(this);
-        video.setCancelable(false);
+        video.setCancelable(true);
         video.setMessage("Sending video is enabled. Do you really want to send video " +
                 "or continue with other types of alerts that are selected.");
         video.setNegativeButton("Other", new DialogInterface.OnClickListener() {
@@ -210,10 +239,20 @@ public class MainActivity extends Activity implements EasyPermissions.Permission
         video.setPositiveButton("Yes, Send Video", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+
                 Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
                 intent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, mSettings.getVideoDuration());
-                if(intent.resolveActivity(getPackageManager()) != null){
-                    startActivityForResult(intent, Constants.REQUEST_VIDEO_CAPTURE);
+                File file = FileUtils.getOutputMediaFile(Constants.FILE_TYPE);
+                if (file != null) {
+                    Uri videoUri = FileProvider.getUriForFile(getApplicationContext()
+                            , getApplicationContext().getPackageName() + ".provider", file);
+                    path = file.getPath();
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, videoUri);
+                    if (intent.resolveActivity(getPackageManager()) != null) {
+                        startActivityForResult(intent, Constants.REQUEST_VIDEO_CAPTURE);
+                    }
+                } else {
+                    Toast.makeText(MainActivity.this, "Error creating video file", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -246,8 +285,23 @@ public class MainActivity extends Activity implements EasyPermissions.Permission
         switch (requestCode) {
             case Constants.REQUEST_VIDEO_CAPTURE:
                 if (resultCode == RESULT_OK) {
-                    Uri videoUri = data.getData();
+                    uploadFileToDrive();
                 }
+                break;
+            case Constants.REQUEST_AUTHORIZATION:
+                if (resultCode == RESULT_OK) {
+                    uploadFileToDrive();
+                }
+        }
+    }
+
+    private void uploadFileToDrive() {
+        if (path != null) {
+            AuthorisationReceiver authReceiver = new AuthorisationReceiver(new Handler());
+            Bundle bundle = new Bundle();
+            bundle.putString(Constants.BUNDLE_KEY_FILE_PATH, path);
+            bundle.putParcelable(Constants.BUNDLE_KEY_AUTHORIZATION_RECEIVER, authReceiver);
+            UploadService.startActionUpload(this, bundle);
         }
     }
 
@@ -261,14 +315,34 @@ public class MainActivity extends Activity implements EasyPermissions.Permission
         mSettings = new Settings(this);
         contact = new EmergencyContacts(this);
         mResultReceiver = new AddressResultReceiver(new Handler());
+        GoogleObjects mGoogleObjects = (GoogleObjects) getApplicationContext();
+        LoggedUser mLoggedUser = new LoggedUser(this);
 
+        bindViewsToActivity();
+
+        //Initialise Google Credentil and Drive Service
+        GoogleAccountCredential credentials = GoogleAccountCredential.usingOAuth2(
+                getApplicationContext(), Arrays.asList(SCOPES))
+                .setBackOff(new ExponentialBackOff());
+        credentials.setSelectedAccountName(mLoggedUser.getEmail());
+
+        Drive driveservice = new Drive.Builder(
+                AndroidHttp.newCompatibleTransport(), JacksonFactory.getDefaultInstance(), credentials)
+                .setApplicationName("Save Me")
+                .build();
+        //Bind GoogleCredentials and DriveService to Global GoogleObject Class
+        mGoogleObjects.setCredential(credentials);
+        mGoogleObjects.setDriveService(driveservice);
+    }
+
+    private void bindViewsToActivity() {
         //Binding activity to views
         rippleBackground = (RippleBackground) findViewById(R.id.main_ripple_background);
         mSosButton = (Button) findViewById(R.id.main_button_sos);
-        mSettingButton = (FloatingActionButton) findViewById(R.id.main_fab_setting);
-        mProfileButton = (FloatingActionButton) findViewById(R.id.main_fab_profile);
+        FloatingActionButton mSettingButton = (FloatingActionButton) findViewById(R.id.main_fab_setting);
+        FloatingActionButton mProfileButton = (FloatingActionButton) findViewById(R.id.main_fab_profile);
         mSignOutButton = (FloatingActionButton) findViewById(R.id.main_fab_signout);
-        mContactsButton = (FloatingActionButton) findViewById(R.id.main_fab_contacts);
+        FloatingActionButton mContactsButton = (FloatingActionButton) findViewById(R.id.main_fab_contacts);
         mRootLayout = (RelativeLayout) findViewById(R.id.main_layout);
         mFabMenu = (FloatingActionsMenu) findViewById(R.id.main_fab_menu);
         mTextAddress = (TextView) findViewById(R.id.main_text_address);
