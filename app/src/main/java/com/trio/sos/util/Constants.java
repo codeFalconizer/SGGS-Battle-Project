@@ -16,6 +16,7 @@ public final class Constants {
     public static final int REQUEST_PERMISSION_SEND_SMS = 1002;
     public static final int REQUEST_PERMISSION_WRITE_STORAGE = 1004;
     public static final int REQUEST_PERMISSION_READ_CONTACTS = 1005;
+    public static final int REQUEST_PERMISSION_GET_ACCOUNTS = 1006;
 
     //Request Codes
     public static final int REQUEST_VIDEO_CAPTURE = 1003;
@@ -43,7 +44,7 @@ public final class Constants {
     public static final String GENDER_MALE = "MALE";
     public static final String GENDER_FEMALE = "FEMALE";
     public static final String INTENT_KEY_FROM = "FROM";
-    public static final String MIME_VIDEO = "video.mp4";
+    public static final String MIME_VIDEO = "video/mp4";
 
     public static final String INTENT_KEY_LOCATION_DATA = "LOCATION_DATA_EXTRA";
     public static final String INTENT_KEY_LOCATION_RESULT = "LOCATION_RESULT_EXTRA";

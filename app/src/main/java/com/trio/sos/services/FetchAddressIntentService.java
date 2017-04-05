@@ -42,7 +42,7 @@ public class FetchAddressIntentService extends IntentService {
         // Get the location passed to this service through an extra.
         Location location = intent.getParcelableExtra(
                 Constants.INTENT_KEY_LOCATION_DATA);
-        Log.i(TAG,location.getProvider());
+        //Log.i(TAG,location.getProvider());
         List<Address> addresses = null;
 
         Geocoder geocoder = new Geocoder(this, Locale.getDefault());
@@ -81,7 +81,7 @@ public class FetchAddressIntentService extends IntentService {
             for (int i = 0; i <= address.getMaxAddressLineIndex(); i++) {
                 addressFragments.add(address.getAddressLine(i));
             }
-            Log.i(TAG, "Address Found");
+            //Log.i(TAG, "Address Found");
             deliverResultToReceiver(Constants.LOCATION_SUCCESS_RESULT,
                     TextUtils.join(System.getProperty("line.separator"),
                             addressFragments));

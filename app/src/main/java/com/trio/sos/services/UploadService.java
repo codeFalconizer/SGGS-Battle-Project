@@ -4,8 +4,12 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.content.Context;
 import android.net.Uri;
+import android.os.Bundle;
+import android.os.Parcel;
+import android.provider.SyncStateContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
+import android.support.v4.os.ResultReceiver;
 import android.util.Log;
 
 import com.google.api.client.extensions.android.http.AndroidHttp;
@@ -19,6 +23,7 @@ import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.model.File;
+import com.trio.sos.GoogleObjects;
 import com.trio.sos.MainActivity;
 import com.trio.sos.R;
 import com.trio.sos.util.Constants;
@@ -39,10 +44,10 @@ public class UploadService extends IntentService {
 
     public static final String TAG = UploadService.class.getName();
     private static final String ACTION_UPLOAD = "com.trio.sos.services.action.UPLOAD";
-    private static final String EXTRA_KEY_FILE_URI = "com.trio.sos.action.FILE";
-    private GoogleAccountCredential mCredential;
-    private com.google.api.services.drive.Drive mDriveService = null;
-    private Context mContext;
+    private static final String EXTRA_KEY_FILE_PATH = "com.trio.sos.action.FILE";
+    public static final String INTENT_KEY_UPLOAD_FAILURE = "FAILURE";
+
+    protected ResultReceiver mReceiver;
 
     private class FileUploadProgressListener implements MediaHttpUploaderProgressListener {
 
@@ -73,22 +78,10 @@ public class UploadService extends IntentService {
         super(TAG);
     }
 
-    public UploadService(@NonNull GoogleAccountCredential mCredential) {
-        super(TAG);
-        this.mCredential = mCredential;
-        HttpTransport transport = AndroidHttp.newCompatibleTransport();
-        JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
-        mDriveService = new com.google.api.services.drive.Drive.Builder(
-                transport, jsonFactory, this.mCredential)
-                .setApplicationName("Save Me")
-                .build();
-    }
-
-    public void startActionUpload(Context context, @NonNull Uri videoUri) {
-        mContext = context;
+    public static void startActionUpload(@NonNull Context context, @NonNull String path) {
         Intent intent = new Intent(context, UploadService.class);
         intent.setAction(ACTION_UPLOAD);
-        intent.putExtra(EXTRA_KEY_FILE_URI, videoUri);
+        intent.putExtra(EXTRA_KEY_FILE_PATH, path);
         context.startService(intent);
     }
 
@@ -98,20 +91,27 @@ public class UploadService extends IntentService {
         if (intent != null) {
             final String action = intent.getAction();
             if (ACTION_UPLOAD.equals(action)) {
-                Uri fileUri = intent.getData();
-                handleUpload(fileUri);
+                String path = intent.getStringExtra(EXTRA_KEY_FILE_PATH);
+                handleUpload(path);
             }
         }
     }
 
-    private void handleUpload(@Nonnull Uri fileUri) {
+    private void handleUpload(String path) {
+        if (path == null){
+            Log.i(TAG,"Null path Received as parameter");
+            return;
+        }
+        GoogleObjects objects= (GoogleObjects) getApplicationContext();
+        Drive mDriveService=objects.getDriveService();
+
         File metaData = new File();
         metaData.setTitle("video_" + (int) (Math.random() * 10000000) + ".mp4");
         metaData.setMimeType(Constants.MIME_VIDEO);
         metaData.setDescription("Emergency Video sent from " + getResources().getString(R.string.app_name));
         try {
             java.io.File file =
-                    new java.io.File(FileUtils.getPath(mContext, fileUri));
+                    new java.io.File(path);
             FileContent mediaContent = new FileContent(Constants.MIME_VIDEO, file);
             Drive.Files.Insert insert = mDriveService.files().insert(metaData, mediaContent);
             MediaHttpUploader uploader = insert.getMediaHttpUploader();
@@ -125,5 +125,11 @@ public class UploadService extends IntentService {
         } catch (IOException e){
             e.printStackTrace();
         }
+    }
+
+    private void deliverResultToReceiver(int resultCode, Intent intent) {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("INTENT",intent);
+        mReceiver.send(resultCode, bundle);
     }
 }

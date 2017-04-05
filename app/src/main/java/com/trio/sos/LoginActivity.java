@@ -100,6 +100,11 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                     , "Contacts permission is required to enable picking of Emergency Contacts"
                     , Constants.REQUEST_PERMISSION_READ_CONTACTS
                     , Manifest.permission.READ_CONTACTS);
+        } else if (!EasyPermissions.hasPermissions(this,Manifest.permission.GET_ACCOUNTS)){
+            EasyPermissions.requestPermissions(this
+                    , "Contacts permission is required to enable picking of Emergency Contacts"
+                    , Constants.REQUEST_PERMISSION_GET_ACCOUNTS
+                    , Manifest.permission.GET_ACCOUNTS);
         }
     }
 
@@ -120,6 +125,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             mLocationDenyFlag = true;
         } else if (requestCode == Constants.REQUEST_PERMISSION_READ_CONTACTS) {
             mContactsDenyFlag = true;
+        }else if (requestCode == Constants.REQUEST_PERMISSION_GET_ACCOUNTS){
+
         }
         requestPermissions();
     }
@@ -166,7 +173,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             handleSignInResult(result);
         } else if (resultCode == RESULT_CANCELED) {
             Toast.makeText(this, "Login Failed", Toast.LENGTH_SHORT).show();
-
         }
     }
 

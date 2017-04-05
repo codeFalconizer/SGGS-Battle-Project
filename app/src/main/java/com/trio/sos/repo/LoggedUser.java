@@ -99,6 +99,7 @@ public class LoggedUser {
     }
 
     public void clear(){
+        editor = sharedPreferences.edit();
         editor.clear();
         editor.commit();
     }
