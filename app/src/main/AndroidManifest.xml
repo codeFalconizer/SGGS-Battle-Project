@@ -47,10 +47,12 @@
         <activity android:name=".MainActivity"
             android:screenOrientation="portrait"/>
         <activity android:name=".InfoActivity"
+            android:configChanges="keyboardHidden"
             android:screenOrientation="portrait"/>
         <activity android:name=".SettingsActivity"
             android:screenOrientation="portrait"/>
         <activity android:name=".ContactsActivity"
+            android:configChanges="keyboardHidden"
             android:screenOrientation="portrait"/>
         <service
             android:name=".services.FetchAddressIntentService"

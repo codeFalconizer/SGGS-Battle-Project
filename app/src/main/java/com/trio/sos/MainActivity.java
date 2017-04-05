@@ -74,12 +74,13 @@ public class MainActivity extends Activity implements EasyPermissions.Permission
     private Location currentBestLocation;
     private AddressResultReceiver mResultReceiver;
     private EmergencyContacts contact;
+    SmsUtil mSmsUtil;
 
     private String path;
 
-    private class AuthorisationReceiver extends ResultReceiver {
+    private class UploadServiceReceiver extends ResultReceiver {
 
-        AuthorisationReceiver(Handler handler) {
+        UploadServiceReceiver(Handler handler) {
             super(handler);
         }
 
@@ -89,6 +90,16 @@ public class MainActivity extends Activity implements EasyPermissions.Permission
             if (resultCode == Constants.FAILURE){
                 Intent intent = resultData.getParcelable(Constants.BUNDLE_KEY_INTENT);
                 startActivityForResult(intent,Constants.REQUEST_AUTHORIZATION);
+            }else if(resultCode == Constants.SUCCESS){
+                String link = resultData.getString(Constants.BUNDLE_KEY_ALTERNATE_LINK);
+                if (link != null){
+                    mSmsUtil.setLink(link);
+                    if (currentBestLocation != null){
+                        mSmsUtil.setLocation(currentBestLocation);
+                    }
+                    new SendSMS().execute(mSmsUtil.getLocationMessage());
+                    new SendSMS().execute(mSmsUtil.getLinkMessage());
+                }
             }
         }
     }
@@ -239,7 +250,10 @@ public class MainActivity extends Activity implements EasyPermissions.Permission
         video.setPositiveButton("Yes, Send Video", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
+                if (currentBestLocation == null){
+                    Toast.makeText(MainActivity.this, "Still fetching location", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
                 intent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, mSettings.getVideoDuration());
                 File file = FileUtils.getOutputMediaFile(Constants.FILE_TYPE);
@@ -265,9 +279,7 @@ public class MainActivity extends Activity implements EasyPermissions.Permission
         sms.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                SmsUtil smsUtil = new SmsUtil();
-                smsUtil.setLocation(currentBestLocation);
-                new SendSMS().execute(smsUtil.getMessage());
+
             }
         });
         sms.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -297,11 +309,12 @@ public class MainActivity extends Activity implements EasyPermissions.Permission
 
     private void uploadFileToDrive() {
         if (path != null) {
-            AuthorisationReceiver authReceiver = new AuthorisationReceiver(new Handler());
+            UploadServiceReceiver uploadServiceReceiver = new UploadServiceReceiver(new Handler());
             Bundle bundle = new Bundle();
             bundle.putString(Constants.BUNDLE_KEY_FILE_PATH, path);
-            bundle.putParcelable(Constants.BUNDLE_KEY_AUTHORIZATION_RECEIVER, authReceiver);
+            bundle.putParcelable(Constants.BUNDLE_KEY_AUTHORIZATION_RECEIVER, uploadServiceReceiver);
             UploadService.startActionUpload(this, bundle);
+            UploadService.startActionChangePermission(this);
         }
     }
 
@@ -317,22 +330,23 @@ public class MainActivity extends Activity implements EasyPermissions.Permission
         mResultReceiver = new AddressResultReceiver(new Handler());
         GoogleObjects mGoogleObjects = (GoogleObjects) getApplicationContext();
         LoggedUser mLoggedUser = new LoggedUser(this);
+        mSmsUtil = new SmsUtil();
 
         bindViewsToActivity();
 
-        //Initialise Google Credentil and Drive Service
+        //Initialise Google Credential and Drive Service
         GoogleAccountCredential credentials = GoogleAccountCredential.usingOAuth2(
                 getApplicationContext(), Arrays.asList(SCOPES))
                 .setBackOff(new ExponentialBackOff());
         credentials.setSelectedAccountName(mLoggedUser.getEmail());
 
-        Drive driveservice = new Drive.Builder(
+        Drive driveService = new Drive.Builder(
                 AndroidHttp.newCompatibleTransport(), JacksonFactory.getDefaultInstance(), credentials)
                 .setApplicationName("Save Me")
                 .build();
         //Bind GoogleCredentials and DriveService to Global GoogleObject Class
         mGoogleObjects.setCredential(credentials);
-        mGoogleObjects.setDriveService(driveservice);
+        mGoogleObjects.setDriveService(driveService);
     }
 
     private void bindViewsToActivity() {

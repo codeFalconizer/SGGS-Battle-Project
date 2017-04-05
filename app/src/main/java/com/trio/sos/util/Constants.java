@@ -55,5 +55,6 @@ public final class Constants {
     public static final String BUNDLE_KEY_FILE_PATH = "FILE_PATH";
     public static final String BUNDLE_KEY_AUTHORIZATION_RECEIVER = "AUTH_RECEIVER";
     public static final String BUNDLE_KEY_INTENT = "AUTH_INTENT";
+    public static final String BUNDLE_KEY_ALTERNATE_LINK = "DOWNLOAD_LINK";
 
 }
