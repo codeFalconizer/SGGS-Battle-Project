@@ -1,7 +1,9 @@
 package com.trio.sos;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -85,6 +87,29 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
+    private AlertDialog constructDialogs(){
+        AlertDialog.Builder video = new AlertDialog.Builder(this);
+        video.setCancelable(false);
+        video.setMessage(getResources().getString(R.string.setting_alert_message_quality));
+        video.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                mSettings.setVideoQualityHQ(true);
+                mSettings.save();
+            }
+        });
+        video.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                mSettings.setVideoQualityHQ(false);
+                mQualitySwitch.setChecked(false);
+                mSettings.save();
+            }
+        });
+        return video.create();
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -130,7 +155,12 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
                 }
                 break;
             case R.id.setting_switch_quality:
-                mSettings.setVideoQualityHQ(mQualitySwitch.isChecked());
+                if (mQualitySwitch.isChecked()){
+                    AlertDialog alert = constructDialogs();
+                    alert.show();
+                }else{
+                    mSettings.setVideoQualityHQ(false);
+                }
         }
         mSettings.save();
     }

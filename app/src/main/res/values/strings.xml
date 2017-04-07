@@ -21,6 +21,8 @@
     <string name="setting_title_video">Send Video</string>
     <string name="setting_title_video_duration">Max. Video Length (secs)</string>
     <string name="setting_title_quality">Record High Quality Video</string>
+    <string name="setting_alert_message_quality">Recording High Quality Videos may increase file size,
+        which will cause longer uploads. Do you really want to set Video quality to HIGH ?</string>
 
     <string name="main_sos">SOS</string>
     <string name="main_text_location">Your Location</string>
