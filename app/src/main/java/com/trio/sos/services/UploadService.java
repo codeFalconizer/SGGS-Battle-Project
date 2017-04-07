@@ -188,7 +188,7 @@ public class UploadService extends IntentService {
     private void createNotification(){
         mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         mBuilder = new NotificationCompat.Builder(this);
-        mBuilder.setSmallIcon(R.mipmap.ic_launcher);
+        mBuilder.setSmallIcon(R.drawable.ic_notification);
         mBuilder.setContentTitle(this.getResources().getString(R.string.app_name));
         mBuilder.setContentText("Beginning Upload to Google Drive");
         mBuilder.setPriority(Notification.PRIORITY_MAX);

@@ -18,31 +18,29 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-/**
- * Created by Pranav on 03-04-2017.
- */
-
 public class FetchAddressIntentService extends IntentService {
 
     public static final String TAG = FetchAddressIntentService.class.getName();
     protected ResultReceiver mReceiver;
 
     public FetchAddressIntentService() {
-     /*
-     * @param name Used to name the worker thread, important only for debugging.
-     */
         super(TAG);
     }
 
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
-        mReceiver = intent.getParcelableExtra(Constants.LOCATION_RECEIVER);
+        try {
+            mReceiver = intent.getParcelableExtra(Constants.LOCATION_RECEIVER);
+        }catch (NullPointerException e){
+            return;
+        }
+
         String errorMessage = "";
 
         // Get the location passed to this service through an extra.
         Location location = intent.getParcelableExtra(
                 Constants.INTENT_KEY_LOCATION_DATA);
-        //Log.i(TAG,location.getProvider());
+
         List<Address> addresses = null;
 
         Geocoder geocoder = new Geocoder(this, Locale.getDefault());

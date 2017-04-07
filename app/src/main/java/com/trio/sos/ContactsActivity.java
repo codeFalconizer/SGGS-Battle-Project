@@ -92,7 +92,7 @@ public class ContactsActivity extends AppCompatActivity implements View.OnClickL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         try {
-            getSupportActionBar().setTitle("Emergency Contact Info");
+            getSupportActionBar().setTitle(getResources().getString(R.string.contact_label));
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
@@ -193,8 +193,6 @@ public class ContactsActivity extends AppCompatActivity implements View.OnClickL
                     fillDataFromContact(data);
                     break;
             }
-        } else {
-            Toast.makeText(this, "Failed to pick contacts", Toast.LENGTH_SHORT).show();
         }
     }
 

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Save Me</string>
+    <string name="app_name">Women Safety</string>
     <string name="action_setting">Settings</string>
 
     <string name="label">Personal Details</string>
@@ -30,6 +30,7 @@
     <string name="contact_text_card_label_2">Emergency Contact 2</string>
     <string name="contact_button_text">Save</string>
     <string name="contact_description_button_contact_picker">Contact Picker Button</string>
+    <string name="contact_label">Trusted Contact Info</string>
     
     <string name="main_coordinates_initial_text">Getting co-ordinates…</string>
     <string name="main_address_initial_text">Getting address…</string>

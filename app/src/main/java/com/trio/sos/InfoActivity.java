@@ -47,11 +47,14 @@ public class InfoActivity extends Activity {
     boolean mRadioFlag = false;
 
     //Async Task to load Profile Picture
-    private class LoadImage extends AsyncTask<Uri, Void, Bitmap> {
+    private class LoadImage extends AsyncTask<String, Void, Bitmap> {
 
         @Override
-        protected Bitmap doInBackground(Uri... params) {
-            String url = params[0].toString();
+        protected Bitmap doInBackground(String... params) {
+            if (params.length != 1){
+                return null;
+            }
+            String url = params[0];
             Bitmap bitmap = null;
             try {
                 bitmap = BitmapFactory.decodeStream((InputStream) new URL(url).getContent());
@@ -92,9 +95,9 @@ public class InfoActivity extends Activity {
         try {
             mEditName.setText(mData.getStringExtra(Constants.KEY_NAME));
             mEditEmail.setText(mData.getStringExtra(Constants.KEY_EMAIL));
-            Uri uri = mData.getParcelableExtra(Constants.KEY_PHOTO_URL);
-            if (uri.toString() != null) {
-                new LoadImage().execute(uri);
+            String url = mData.getStringExtra(Constants.KEY_PHOTO_URL);
+            if (url != null) {
+                new LoadImage().execute(url);
             }
         } catch (Exception e) {
             e.printStackTrace();
