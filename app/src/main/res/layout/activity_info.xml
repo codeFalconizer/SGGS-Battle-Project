@@ -49,7 +49,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:drawablePadding="@dimen/info_text_edit_padding"
-                            android:drawableStart="@drawable/ic_action_name"
+                            android:drawableStart="@drawable/icon_name"
                             android:hint="@string/edit_hint_name"
                             android:inputType="text" />
                     </android.support.design.widget.TextInputLayout>
@@ -64,7 +64,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:drawablePadding="@dimen/info_text_edit_padding"
-                            android:drawableStart="@drawable/ic_action_number"
+                            android:drawableStart="@drawable/icon_number"
                             android:hint="@string/edit_hint_contact"
                             android:inputType="phone" />
                     </android.support.design.widget.TextInputLayout>
@@ -79,7 +79,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:drawablePadding="@dimen/info_text_edit_padding"
-                            android:drawableStart="@drawable/ic_action_email"
+                            android:drawableStart="@drawable/icon_email"
                             android:enabled="false"
                             android:hint="@string/edit_hint_email"
                             android:inputType="textEmailAddress" />
@@ -131,7 +131,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:drawablePadding="@dimen/edittext_drawable_padding"
-                            android:drawableStart="@drawable/ic_action_date"
+                            android:drawableStart="@drawable/icon_date"
                             android:enabled="false"
                             android:hint="@string/edit_hint_dob"
                             android:padding="@dimen/info_text_edit_padding" />
@@ -141,7 +141,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:contentDescription="@string/info_circle_desc"
-                            android:src="@drawable/ic_action_date" />
+                            android:src="@drawable/icon_date" />
                     </LinearLayout>
                 </LinearLayout>
             </ScrollView>

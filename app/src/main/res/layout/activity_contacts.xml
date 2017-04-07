@@ -45,7 +45,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:drawablePadding="@dimen/edittext_drawable_padding"
-                            android:drawableStart="@drawable/ic_action_name"
+                            android:drawableStart="@drawable/icon_name"
                             android:hint="@string/edit_hint_name" />
 
                         <ImageButton
@@ -66,7 +66,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:drawablePadding="@dimen/edittext_drawable_padding"
-                        android:drawableStart="@drawable/ic_action_number"
+                        android:drawableStart="@drawable/icon_number"
                         android:hint="@string/edit_hint_contact"
                         android:inputType="phone" />
 
@@ -75,7 +75,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:drawablePadding="@dimen/edittext_drawable_padding"
-                        android:drawableStart="@drawable/ic_action_email"
+                        android:drawableStart="@drawable/icon_email"
                         android:hint="@string/edit_hint_email"
                         android:inputType="textEmailAddress" />
 
@@ -117,7 +117,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:drawablePadding="@dimen/edittext_drawable_padding"
-                            android:drawableStart="@drawable/ic_action_name"
+                            android:drawableStart="@drawable/icon_name"
                             android:hint="@string/edit_hint_name" />
 
                         <ImageButton
@@ -138,7 +138,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:drawablePadding="@dimen/edittext_drawable_padding"
-                        android:drawableStart="@drawable/ic_action_number"
+                        android:drawableStart="@drawable/icon_number"
                         android:hint="@string/edit_hint_contact"
                         android:inputType="phone" />
 
@@ -147,7 +147,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:drawablePadding="@dimen/edittext_drawable_padding"
-                        android:drawableStart="@drawable/ic_action_email"
+                        android:drawableStart="@drawable/icon_email"
                         android:hint="@string/edit_hint_email"
                         android:inputType="textEmailAddress" />
                 </LinearLayout>

@@ -92,13 +92,13 @@ public class MainActivity extends Activity implements EasyPermissions.Permission
                 startActivityForResult(intent,Constants.REQUEST_AUTHORIZATION);
             }else if(resultCode == Constants.SUCCESS){
                 String link = resultData.getString(Constants.BUNDLE_KEY_ALTERNATE_LINK);
-                if (link != null){
+                if (link != null && mSettings.isSmsAlertEnabled()){
                     mSmsUtil.setLink(link);
+                    new SendSMS().execute(mSmsUtil.getLinkMessage());
                     if (currentBestLocation != null){
                         mSmsUtil.setLocation(currentBestLocation);
+                        new SendSMS().execute(mSmsUtil.getLocationMessage());
                     }
-                    new SendSMS().execute(mSmsUtil.getLocationMessage());
-                    new SendSMS().execute(mSmsUtil.getLinkMessage());
                 }
             }
         }
@@ -241,12 +241,14 @@ public class MainActivity extends Activity implements EasyPermissions.Permission
         video.setCancelable(true);
         video.setMessage("Sending video is enabled. Do you really want to send video " +
                 "or continue with other types of alerts that are selected.");
+
         video.setNegativeButton("Other", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
             }
         });
+
         video.setPositiveButton("Yes, Send Video", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -255,6 +257,11 @@ public class MainActivity extends Activity implements EasyPermissions.Permission
                     return;
                 }
                 Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+                if (mSettings.isVideoHQ()){
+                    intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY,1);
+                }else{
+                    intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY,0);
+                }
                 intent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, mSettings.getVideoDuration());
                 File file = FileUtils.getOutputMediaFile(Constants.FILE_TYPE);
                 if (file != null) {

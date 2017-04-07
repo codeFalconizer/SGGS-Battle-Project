@@ -16,7 +16,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_action_sms" />
+                android:src="@drawable/icon_sms" />
 
             <TextView
                 android:id="@+id/setting_text_sms"
@@ -39,7 +39,7 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"/>
+        android:layout_height="1dp" />
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
@@ -54,7 +54,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_action_email" />
+                android:src="@drawable/icon_email" />
 
             <TextView
                 android:id="@+id/setting_text_email"
@@ -77,7 +77,7 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"/>
+        android:layout_height="1dp" />
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
@@ -92,15 +92,15 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_action_video" />
+                android:src="@drawable/icon_video" />
 
             <TextView
                 android:id="@+id/setting_text_video"
                 android:layout_width="0dp"
-                android:gravity="center_vertical"
                 android:layout_height="match_parent"
                 android:layout_marginStart="@dimen/setting_text_margin_left"
                 android:layout_weight="1"
+                android:gravity="center_vertical"
                 android:text="@string/setting_title_video"
                 android:textSize="@dimen/setting_text_size_title" />
 
@@ -115,7 +115,7 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"/>
+        android:layout_height="1dp" />
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
@@ -130,7 +130,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_action_timer" />
+                android:src="@drawable/icon_timer" />
 
             <TextView
                 android:id="@+id/setting_text_video_duration"
@@ -147,9 +147,46 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/setting_switch_margin_right"
-                android:spinnerMode="dialog"
-                android:padding="15dp">
-            </Spinner>
+                android:padding="15dp"
+                android:spinnerMode="dialog"/>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp" />
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/icon_quality" />
+
+            <TextView
+                android:id="@+id/setting_text_quality"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/setting_text_margin_left"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="@string/setting_title_quality"
+                android:textSize="@dimen/setting_text_size_title" />
+
+            <Switch
+                android:id="@+id/setting_switch_quality"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/setting_switch_margin_right"
+                android:padding="10dp" />
         </LinearLayout>
     </android.support.v7.widget.CardView>
 </LinearLayout>

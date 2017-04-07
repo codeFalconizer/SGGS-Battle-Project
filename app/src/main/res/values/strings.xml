@@ -20,6 +20,7 @@
     <string name="setting_title_email">Send Email</string>
     <string name="setting_title_video">Send Video</string>
     <string name="setting_title_video_duration">Max. Video Length (secs)</string>
+    <string name="setting_title_quality">Record High Quality Video</string>
 
     <string name="main_sos">SOS</string>
     <string name="main_text_location">Your Location</string>

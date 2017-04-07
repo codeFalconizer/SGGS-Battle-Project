@@ -8,8 +8,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.os.ResultReceiver;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.api.client.googleapis.batch.BatchRequest;
 import com.google.api.client.googleapis.batch.json.JsonBatchCallback;
@@ -41,6 +43,7 @@ public class UploadService extends IntentService {
     private NotificationCompat.Builder mBuilder;
     public static final int NOTIFICATION_ID = 1;
     private File driveFile;
+    private boolean uploadSuccesful = false;
 
     private class FileUploadProgressListener implements MediaHttpUploaderProgressListener {
 
@@ -65,7 +68,9 @@ public class UploadService extends IntentService {
                     break;
                 case MEDIA_COMPLETE:
                     Log.i(TAG, "Upload Complete");
+                    uploadSuccesful=true;
                     sendNotification(101);
+                    break;
             }
         }
     }
@@ -93,6 +98,10 @@ public class UploadService extends IntentService {
 
     private void handlePermissionChange() {
         String fileId = driveFile.getId();
+        if (fileId==null){
+            Toast.makeText(this, "Uploading Video Failed", Toast.LENGTH_SHORT).show();
+            return ;
+        }
         Drive mService = ((GoogleObjects)getApplicationContext()).getDriveService();
         JsonBatchCallback<Permission> callback = new JsonBatchCallback<Permission>() {
             @Override
@@ -144,7 +153,11 @@ public class UploadService extends IntentService {
                 String path = intent.getStringExtra(EXTRA_KEY_FILE_PATH);
                 handleUpload(path, receiver);
             }else if (ACTION_CHANGE_PERMISSIONS.equals(action)){
-                handlePermissionChange();
+                if(uploadSuccesful) {
+                    handlePermissionChange();
+                }else{
+
+                }
             }
         }
     }
@@ -189,6 +202,7 @@ public class UploadService extends IntentService {
         mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         mBuilder = new NotificationCompat.Builder(this);
         mBuilder.setSmallIcon(R.drawable.ic_notification);
+        mBuilder.setContentInfo("This is testing for info");
         mBuilder.setContentTitle(this.getResources().getString(R.string.app_name));
         mBuilder.setContentText("Beginning Upload to Google Drive");
         mBuilder.setPriority(Notification.PRIORITY_MAX);

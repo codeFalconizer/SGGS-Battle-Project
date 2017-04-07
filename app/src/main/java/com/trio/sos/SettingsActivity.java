@@ -21,7 +21,7 @@ import pub.devrel.easypermissions.EasyPermissions;
 
 public class SettingsActivity extends AppCompatActivity implements View.OnClickListener,AdapterView.OnItemSelectedListener,EasyPermissions.PermissionCallbacks {
 
-    Switch mSmsSwitch,mVideoSwitch,mEmailSwitch;
+    Switch mSmsSwitch,mVideoSwitch,mEmailSwitch,mQualitySwitch;
     Settings mSettings;
     Spinner mVideoDurationSpinner;
 
@@ -37,19 +37,23 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
         mEmailSwitch = (Switch) findViewById(R.id.setting_switch_email);
         mVideoSwitch = (Switch) findViewById(R.id.setting_switch_video);
         mVideoDurationSpinner = (Spinner) findViewById(R.id.setting_spinner_video_duration);
+        mQualitySwitch = (Switch)findViewById(R.id.setting_switch_quality);
 
         //Setting Listeners
         mSmsSwitch.setOnClickListener(this);
         mEmailSwitch.setOnClickListener(this);
         mVideoSwitch.setOnClickListener(this);
         mVideoDurationSpinner.setOnItemSelectedListener(this);
+        mQualitySwitch.setOnClickListener(this);
 
         //Getting settings
         mSmsSwitch.setChecked(mSettings.isSmsAlertEnabled());
         mEmailSwitch.setChecked(mSettings.isEmailAlertEnabled());
         mVideoSwitch.setChecked(mSettings.isVideoAlertEnabled());
+        mQualitySwitch.setChecked(mSettings.isVideoHQ());
         if (!mVideoSwitch.isChecked()){
             mVideoDurationSpinner.setEnabled(false);
+            mQualitySwitch.setEnabled(false);
         }
 
         ArrayList<Integer> list = new ArrayList<>();
@@ -117,12 +121,16 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
             case R.id.setting_switch_video:
                 if (mVideoSwitch.isChecked()){
                     mVideoDurationSpinner.setEnabled(true);
+                    mQualitySwitch.setEnabled(true);
                     mSettings.setVideoAlertEnabled(true);
                 }else{
                     mVideoDurationSpinner.setEnabled(false);
+                    mQualitySwitch.setEnabled(false);
                     mSettings.setVideoAlertEnabled(false);
                 }
                 break;
+            case R.id.setting_switch_quality:
+                mSettings.setVideoQualityHQ(mQualitySwitch.isChecked());
         }
         mSettings.save();
     }
