@@ -67,7 +67,6 @@ public class MainActivity extends Activity implements EasyPermissions.Permission
     private TextView mTextLongitude;
     private Button mSosButton;
     private AlertDialog mVideoAlertDialog;
-    private AlertDialog mSmsAlertDialog;
 
     private Settings mSettings;
     private LocationManager mLocationManager;
@@ -87,18 +86,16 @@ public class MainActivity extends Activity implements EasyPermissions.Permission
         @Override
         protected void onReceiveResult(int resultCode, Bundle resultData) {
             super.onReceiveResult(resultCode, resultData);
-            if (resultCode == Constants.FAILURE){
+            if (resultCode == Constants.AUTH_FAILURE){
                 Intent intent = resultData.getParcelable(Constants.BUNDLE_KEY_INTENT);
                 startActivityForResult(intent,Constants.REQUEST_AUTHORIZATION);
             }else if(resultCode == Constants.SUCCESS){
                 String link = resultData.getString(Constants.BUNDLE_KEY_ALTERNATE_LINK);
-                if (link != null && mSettings.isSmsAlertEnabled()){
+                if (link != null){
+                    Log.i(TAG,link);
                     mSmsUtil.setLink(link);
                     new SendSMS().execute(mSmsUtil.getLinkMessage());
-                    if (currentBestLocation != null){
-                        mSmsUtil.setLocation(currentBestLocation);
-                        new SendSMS().execute(mSmsUtil.getLocationMessage());
-                    }
+                    Log.d(TAG+" Link",""+mSmsUtil.getLinkMessage());
                 }
             }
         }
@@ -127,7 +124,10 @@ public class MainActivity extends Activity implements EasyPermissions.Permission
                 return Constants.FAILURE;
             }
             String message = params[0];
-            Log.i(TAG, message);
+            if (message==null || message.equals("")){
+                Log.e(TAG,"Empty parameter received");
+                return Constants.SUCCESS;
+            }
             SmsManager smsManager = SmsManager.getDefault();
             List<EmergencyContacts.Person> people = contact.getAllContacts();
             smsManager.sendTextMessage(people.get(0).getNumber(), null, message, null, null);
@@ -242,20 +242,22 @@ public class MainActivity extends Activity implements EasyPermissions.Permission
         video.setMessage("Sending video is enabled. Do you really want to send video " +
                 "or continue with other types of alerts that are selected.");
 
-        video.setNegativeButton("Other", new DialogInterface.OnClickListener() {
+        video.setNegativeButton("SMS Only", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
+                mSmsUtil.setLocation(currentBestLocation);
+                new SendSMS().execute(mSmsUtil.getLocationMessage());
+                Toast.makeText(MainActivity.this, "SMS Sent Successfully", Toast.LENGTH_SHORT).show();
             }
         });
 
         video.setPositiveButton("Yes, Send Video", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if (currentBestLocation == null){
-                    Toast.makeText(MainActivity.this, "Still fetching location", Toast.LENGTH_SHORT).show();
-                    return;
-                }
+                mSmsUtil.setLocation(currentBestLocation);
+                new SendSMS().execute(mSmsUtil.getLocationMessage());
+                Toast.makeText(MainActivity.this, "Location Sent Successfully", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
                 if (mSettings.isVideoHQ()){
                     intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY,1);
@@ -263,6 +265,7 @@ public class MainActivity extends Activity implements EasyPermissions.Permission
                     intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY,0);
                 }
                 intent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, mSettings.getVideoDuration());
+
                 File file = FileUtils.getOutputMediaFile(Constants.FILE_TYPE);
                 if (file != null) {
                     Uri videoUri = FileProvider.getUriForFile(getApplicationContext()
@@ -278,24 +281,6 @@ public class MainActivity extends Activity implements EasyPermissions.Permission
             }
         });
         mVideoAlertDialog = video.create();
-
-        AlertDialog.Builder sms = new AlertDialog.Builder(this);
-        sms.setCancelable(false);
-        video.setMessage("The application is about to send SMS. This could cause you money. " +
-                "Do you want to continue?");
-        sms.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-            }
-        });
-        sms.setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-        mSmsAlertDialog = sms.create();
     }
 
     @Override
@@ -376,8 +361,16 @@ public class MainActivity extends Activity implements EasyPermissions.Permission
         mSosButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (currentBestLocation==null){
+                    Toast.makeText(MainActivity.this, "Still Fetching Location", Toast.LENGTH_SHORT).show();
+                    return ;
+                }
                 if (mSettings.isVideoAlertEnabled()) {
                     mVideoAlertDialog.show();
+                }else {
+                    mSmsUtil.setLocation(currentBestLocation);
+                    new SendSMS().execute(mSmsUtil.getLocationMessage());
+                    Toast.makeText(MainActivity.this, "SMS sent successfully", Toast.LENGTH_SHORT).show();
                 }
             }
         });

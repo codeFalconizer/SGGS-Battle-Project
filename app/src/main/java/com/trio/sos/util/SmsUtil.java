@@ -26,7 +26,7 @@ public class SmsUtil {
 
     public String getLinkMessage() {
         String message = null;
-        if (location == null){
+        if (link == null){
             return null;
         }else{
             message = "Save me"

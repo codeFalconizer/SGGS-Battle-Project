@@ -31,7 +31,7 @@ public class Settings {
 
     public void update() {
         SharedPreferences settings = mContext.getSharedPreferences(SHARED_PREFERENCE_SETTINGS, Context.MODE_PRIVATE);
-        setEmailAlertEnabled(settings.getBoolean(PREFERENCE_KEY_EMAIL, true));
+        setEmailAlertEnabled(settings.getBoolean(PREFERENCE_KEY_EMAIL, false));
         setSmsAlertEnabled(settings.getBoolean(PREFERENCE_KEY_SMS, true));
         setVideoAlertEnabled(settings.getBoolean(PREFERENCE_KEY_VIDEO, true));
         setVideoDuration(settings.getInt(PREFERENCE_KEY_VIDEO_DURATION, 5));

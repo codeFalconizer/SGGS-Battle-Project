@@ -7,7 +7,9 @@ package com.trio.sos.util;
 public final class Constants {
     //Result Codes
     public static final int SUCCESS = 1;
-    public static final int FAILURE = 2;
+    public static final int FAILURE = 0;
+
+    public static final int AUTH_FAILURE = 2;
 
     //Permission Request Codes
     public static final int REQUEST_SIGN_IN = 999;

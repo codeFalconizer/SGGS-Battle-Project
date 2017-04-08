@@ -79,6 +79,22 @@ public class UploadService extends IntentService {
         super(TAG);
     }
 
+    @Override
+    protected void onHandleIntent(Intent intent) {
+        if (intent != null) {
+            final String action = intent.getAction();
+            if (ACTION_UPLOAD.equals(action)) {
+                ResultReceiver receiver = intent.getParcelableExtra(EXTRA_KEY_AUTHORIZATION_RECEIVER);
+                String path = intent.getStringExtra(EXTRA_KEY_FILE_PATH);
+                handleUpload(path, receiver);
+            }else if (ACTION_CHANGE_PERMISSIONS.equals(action)){
+                if(uploadSuccesful) {
+                    handlePermissionChange();
+                }
+            }
+        }
+    }
+
     public static void startActionUpload(@NonNull Context context
             , @NonNull Bundle bundle) {
         String path = bundle.getString(Constants.BUNDLE_KEY_FILE_PATH);
@@ -136,6 +152,8 @@ public class UploadService extends IntentService {
                     .queue(batch, callback);
             batch.execute();
             Bundle bundle = new Bundle();
+            Log.d(TAG,"Getting alernate drive file link");
+            Log.d(TAG,""+driveFile.getAlternateLink());
             bundle.putString(Constants.BUNDLE_KEY_ALTERNATE_LINK,driveFile.getAlternateLink());
             deliverResultToReceiver(Constants.SUCCESS,bundle);
         } catch (Exception e) {
@@ -144,23 +162,7 @@ public class UploadService extends IntentService {
     }
 
 
-    @Override
-    protected void onHandleIntent(Intent intent) {
-        if (intent != null) {
-            final String action = intent.getAction();
-            if (ACTION_UPLOAD.equals(action)) {
-                ResultReceiver receiver = intent.getParcelableExtra(EXTRA_KEY_AUTHORIZATION_RECEIVER);
-                String path = intent.getStringExtra(EXTRA_KEY_FILE_PATH);
-                handleUpload(path, receiver);
-            }else if (ACTION_CHANGE_PERMISSIONS.equals(action)){
-                if(uploadSuccesful) {
-                    handlePermissionChange();
-                }else{
 
-                }
-            }
-        }
-    }
 
     private void handleUpload(@NonNull String path, @NonNull ResultReceiver receiver) {
         mReceiver = receiver;
@@ -187,7 +189,7 @@ public class UploadService extends IntentService {
             e.printStackTrace();
             Bundle bundle = new Bundle();
             bundle.putParcelable(Constants.BUNDLE_KEY_INTENT,e.getIntent());
-            deliverResultToReceiver(Constants.FAILURE, bundle);
+            deliverResultToReceiver(Constants.AUTH_FAILURE, bundle);
 
         } catch (IOException e) {
             e.printStackTrace();
