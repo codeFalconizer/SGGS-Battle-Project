@@ -18,7 +18,7 @@ public class SmsUtil {
         if (location == null){
             return null;
         }else{
-            message = "Save me"
+            message = "It's Emergency"
                     + "\nLocation on Map: " + mMapsUrl + location.getLatitude() + "," + location.getLongitude();
         }
         return message;
@@ -29,7 +29,7 @@ public class SmsUtil {
         if (link == null){
             return null;
         }else{
-            message = "Save me"
+            message = "It's Emergency"
                     + "\nLink to Video: " + link;
         }
         return message;

@@ -19,12 +19,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/info_label_height"
                 android:background="@color/colorPrimary"
-                android:fontFamily="cursive"
                 android:gravity="center_horizontal"
                 android:text="@string/label"
                 android:textColor="#FFFFFF"
                 android:textSize="@dimen/info_label_size"
-                android:textStyle="bold" />
+                android:fontFamily="cursive"/>
 
             <android.support.v4.widget.Space
                 android:layout_width="match_parent"
